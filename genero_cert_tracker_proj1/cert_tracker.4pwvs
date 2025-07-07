@@ -8,7 +8,7 @@
     <Node path="/Group[group]/Databases[library]"/>
   </ExpandedNodes>
   <OpenDocuments>
-    <Document container="true" filePath="fglprofile" locator="1:46" module="mod-ce3">
+    <Document container="true" filePath="fglprofile" locator="2:45" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
     <Document container="true" filePath="utils.4gl" locator="5:16" module="mod-ce3">
@@ -19,6 +19,22 @@
     <Document container="true" filePath="db/certtrackerdb_creationscript.4gl" locator="1:1" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
+    <Document container="true" filePath="src/practical_test_src.4gl" locator="152:59" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/knowledge_test_src.4gl" locator="197:1" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/cert_tracker_src.4gl" locator="11:25" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/practical_test_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="src/user_control_src.4gl" locator="57:95" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="form/main_menu_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="form/user_info_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="form/knowledge_test_form.4fd" locator="" module="mod-fd"/>
   </OpenDocuments>
-  <CurrentDocument filePath="db/certtrackerdb.4db" module="mod-db3"/>
+  <CurrentDocument filePath="src/practical_test_src.4gl" module="mod-ce3"/>
 </WorkspaceViewState>

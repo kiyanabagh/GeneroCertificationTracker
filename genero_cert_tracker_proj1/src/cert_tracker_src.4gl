@@ -1,13 +1,16 @@
 IMPORT FGL user_control_src
 IMPORT FGL knowledge_test_src
+IMPORT FGL practical_test_src
 
+--executable file
 MAIN
-DATABASE certtracker
-
+DATABASE certtracker --connect to db
 {
+--uncomment commands below to clear and rebuild bd
 CALL db_drop_tables()
-CALL db_create_tables()
-}
+CALL db_create_tables()}
+
+-- open main menu form 
 OPEN WINDOW w1 WITH FORM "main_menu_form"
 MENU 
     ON ACTION QUIT
@@ -17,7 +20,7 @@ MENU
     ON ACTION edit_knowledge_test
         CALL knowledge_test_driver()
     ON ACTION edit_practical_test
-        DISPLAY "edit practical tests"
+        CALL practical_test_driver()
     ON ACTION query_tests
         DISPLAY "query tests"
     ON ACTION certification_info
@@ -66,7 +69,7 @@ FUNCTION db_create_tables()
     EXECUTE IMMEDIATE "CREATE TABLE KnowledgeTest (
         userid VARCHAR(30) NOT NULL,
         testid VARCHAR(20) NOT NULL,
-        grade BOOLEAN,
+        grade BIGINT,
         date_completed DATE,
         genero_version VARCHAR(50),
         CONSTRAINT PK_KnowledgeTest_1 PRIMARY KEY(testid),

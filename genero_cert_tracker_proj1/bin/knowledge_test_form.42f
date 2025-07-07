@@ -17,14 +17,14 @@
     <Label name="knowledgetest_grade_label1" width="14" text="grade" justify="left" posY="2" posX="1" gridWidth="14">
       <LStr text="grade"/>
     </Label>
-    <FormField name="knowledgetest.grade" colName="grade" sqlType="BOOLEAN" fieldId="2" sqlTabName="knowledgetest" tabIndex="3">
-      <Edit width="1" scroll="1" posY="2" posX="16" gridWidth="1"/>
+    <FormField name="knowledgetest.grade" colName="grade" sqlType="BIGINT" fieldId="2" sqlTabName="knowledgetest" tabIndex="3">
+      <Edit width="20" scroll="1" posY="2" posX="16" gridWidth="20"/>
     </FormField>
     <Label name="knowledgetest_date_completed_label1" width="14" text="date_completed" justify="left" posY="2" posX="47" gridWidth="14">
       <LStr text="date_completed"/>
     </Label>
     <FormField name="knowledgetest.date_completed" colName="date_completed" sqlType="DATE" fieldId="3" sqlTabName="knowledgetest" tabIndex="4">
-      <Edit width="10" scroll="1" posY="2" posX="62" gridWidth="10"/>
+      <DateEdit width="8" posY="2" posX="62" gridWidth="10"/>
     </FormField>
     <Label name="knowledgetest_genero_version_label1" width="14" text="genero_version" justify="left" posY="3" posX="1" gridWidth="14">
       <LStr text="genero_version"/>
@@ -32,11 +32,11 @@
     <FormField name="knowledgetest.genero_version" colName="genero_version" sqlType="VARCHAR(50)" fieldId="4" sqlTabName="knowledgetest" tabIndex="5">
       <Edit width="30" scroll="1" posY="3" posX="16" gridWidth="30"/>
     </FormField>
-    <Button name="query_ktests" width="14" text="Query Knowledge Tests" posY="4" posX="19" gridWidth="14" tabIndex="6">
-      <LStr text="Query Knowledge Tests"/>
+    <Button name="query_ktests" width="23" text="Query Knowledge Test Info" posY="4" posX="11" gridWidth="23" tabIndex="6">
+      <LStr text="Query Knowledge Test Info"/>
     </Button>
-    <Button name="input_knowledgetest" width="25" text="Input or Edit Knowledge Test Info" posY="4" posX="38" gridWidth="25" tabIndex="7">
-      <LStr text="Input or Edit Knowledge Test Info"/>
+    <Button name="input_knowledgetest" width="21" text="Input or Update Knowledge Test Info" posY="4" posX="41" gridWidth="21" tabIndex="7">
+      <LStr text="Input or Update Knowledge Test Info"/>
     </Button>
   </Grid>
   <RecordView tabName="knowledgetest">

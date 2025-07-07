@@ -3,7 +3,7 @@ certification^certid^457^30^2^
 certification^date^263^4^3^
 knowledgetest^userid^457^30^1^
 knowledgetest^testid^457^20^2^
-knowledgetest^grade^45^1^3^
+knowledgetest^grade^52^8^3^
 knowledgetest^date_completed^7^4^4^
 knowledgetest^genero_version^201^50^5^
 practicaltest^userid^457^30^1^

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ManagedForm databaseName="db_creation_test" fileVersion="40100" gstVersion="50102" name="managedform" uid="{bc99ccb0-b31f-42d8-8315-6dd6647add14}">
+  <AGSettings>
+    <DynamicProperties version="4"/>
+  </AGSettings>
+  <Record masterTable="practicaltest" name="record1" uid="{21ad0b4b-06a2-4489-9760-4a614814ad8f}">
+    <RecordField colName="userid" fieldIdRef="1" fieldType="TABLE_COLUMN" name="practicaltest.userid" sqlTabName="practicaltest" uid="{be619d8d-b745-450b-a34d-1971f80080c0}"/>
+    <RecordField colName="testid" fieldIdRef="2" fieldType="TABLE_COLUMN" name="practicaltest.testid" sqlTabName="practicaltest" uid="{46eec201-90e8-421a-832a-4c0917f4d13e}"/>
+    <RecordField colName="grade" fieldIdRef="3" fieldType="TABLE_COLUMN" name="practicaltest.grade" sqlTabName="practicaltest" uid="{4628c053-ac6d-4574-974a-f5a3eafb9eaf}"/>
+    <RecordField colName="status" fieldIdRef="4" fieldType="TABLE_COLUMN" name="practicaltest.status" sqlTabName="practicaltest" uid="{da4c0894-bca1-4d6f-918a-49e3609702fa}"/>
+    <RecordField colName="scenario" fieldIdRef="5" fieldType="TABLE_COLUMN" name="practicaltest.scenario" sqlTabName="practicaltest" uid="{e860d4e0-20d3-4b15-8e4a-ab469578e557}"/>
+    <RecordField colName="date_started" fieldIdRef="6" fieldType="TABLE_COLUMN" name="practicaltest.date_started" sqlTabName="practicaltest" uid="{e24205e8-71f4-4926-8cb0-509c605d1662}"/>
+    <RecordField colName="date_completed" fieldIdRef="7" fieldType="TABLE_COLUMN" name="practicaltest.date_completed" sqlTabName="practicaltest" uid="{265de8a5-7e02-4dba-9f72-c7ede81f9576}"/>
+    <RecordField colName="comment" fieldIdRef="8" fieldType="TABLE_COLUMN" name="practicaltest.comment" sqlTabName="practicaltest" uid="{c41ccc7d-8f50-47dd-9134-30b6a695117e}"/>
+    <RecordField colName="genero_version" fieldIdRef="9" fieldType="TABLE_COLUMN" name="practicaltest.genero_version" sqlTabName="practicaltest" uid="{67719138-70cd-4542-b9a9-d5ccc9a61a4e}"/>
+  </Record>
+  <Form gridHeight="9" gridWidth="97" name="form" text="Form">
+    <Grid gridHeight="7" gridWidth="91" name="db_creation_test1" posX="6" posY="1">
+      <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_userid_label1" posX="1" posY="1">
+        <Initializer text="dbschema:practicaltest.userid/@label"/>
+      </Label>
+      <Edit colName="userid" fieldId="1" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="practicaltest.userid" posX="16" posY="1" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="12" justify="left" name="practicaltest_testid_label1" posX="47" posY="1">
+        <Initializer text="dbschema:practicaltest.testid/@label"/>
+      </Label>
+      <Edit colName="testid" fieldId="2" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="practicaltest.testid" posX="60" posY="1" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_grade_label1" posX="1" posY="2">
+        <Initializer text="dbschema:practicaltest.grade/@label"/>
+      </Label>
+      <Edit colName="grade" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="1" name="practicaltest.grade" posX="16" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="12" justify="left" name="practicaltest_status_label1" posX="47" posY="2">
+        <Initializer text="dbschema:practicaltest.status/@label"/>
+      </Label>
+      <Edit colName="status" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="practicaltest.status" posX="60" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_scenario_label1" posX="1" posY="3">
+        <Initializer text="dbschema:practicaltest.scenario/@label"/>
+      </Label>
+      <Edit colName="scenario" fieldId="5" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="practicaltest.scenario" posX="16" posY="3" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="12" justify="left" name="practicaltest_date_started_label1" posX="47" posY="3">
+        <Initializer text="dbschema:practicaltest.date_started/@label"/>
+      </Label>
+      <DateEdit colName="date_started" fieldId="6" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="practicaltest.date_started" posX="60" posY="3" sqlTabName="practicaltest" tabIndex="-1" widget="DateEdit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </DateEdit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_date_completed_label1" posX="1" posY="4">
+        <Initializer text="dbschema:practicaltest.date_completed/@label"/>
+      </Label>
+      <DateTimeEdit colName="date_completed" fieldId="7" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="practicaltest.date_completed" posX="16" posY="4" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="DateTimeEdit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </DateTimeEdit>
+      <Label gridHeight="1" gridWidth="12" justify="left" name="practicaltest_comment_label1" posX="47" posY="4">
+        <Initializer text="dbschema:practicaltest.comment/@label"/>
+      </Label>
+      <Edit colName="comment" fieldId="8" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="practicaltest.comment" posX="60" posY="4" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_genero_version_label1" posX="1" posY="5">
+        <Initializer text="dbschema:practicaltest.genero_version/@label"/>
+      </Label>
+      <Edit colName="genero_version" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="practicaltest.genero_version" posX="16" posY="5" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Button gridHeight="1" gridWidth="12" name="query_ptests" posX="24" posY="6" tabIndex="-1" text="Query Practical Tests"/>
+      <Button gridHeight="1" gridWidth="21" name="input_practicaltest" posX="40" posY="6" tabIndex="-1" text="Input and Update Practical Test Info"/>
+    </Grid>
+  </Form>
+  <DiagramLayout>
+    <![CDATA[AAAAAgAAAEwAewAyADEAYQBkADAAYgA0AGIALQAwADYAYQAyAC0ANAA0ADgAOQAtADkANwA2ADAALQA0AGEANgAxADQAOAAxADQAYQBkADgAZgB9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==]]>
+  </DiagramLayout>
+</ManagedForm>
