@@ -1,13 +1,14 @@
 IMPORT FGL utils
 {Glitchy Input User info, after you input a user, to exit the page, you have to click cancel
 }
-SCHEMA db_creation_test --connect to db schema
-    TYPE t_user_rec RECORD LIKE User.* 
-    TYPE t_userarray DYNAMIC ARRAY OF t_user_rec
-    DEFINE userarr t_userarray
 
- --define temporary storage array of user records for future use
-DEFINE useratt DYNAMIC ARRAY OF RECORD 
+SCHEMA cert_trackerdb_2 --connect to db schema
+TYPE t_user_rec RECORD LIKE User.*
+TYPE t_userarray DYNAMIC ARRAY OF t_user_rec
+DEFINE userarr t_userarray
+DEFINE rec t_user_rec
+--define temporary storage array of user records for future use
+DEFINE useratt DYNAMIC ARRAY OF RECORD
     userid LIKE user.userid,
     fname LIKE user.fname,
     lname LIKE user.lname,
@@ -18,239 +19,219 @@ DEFINE useratt DYNAMIC ARRAY OF RECORD
     contact_date LIKE user.contact_date,
     phone_num LIKE user.phone_num,
     reason_for_cert LIKE user.reason_for_cert
-    END RECORD
+END RECORD
 
 --the function called by cert_tracker_src, acts as main
 FUNCTION user_form_driver()
 --define function variables for the sql conditions and fields of the form
-  DEFINE sql_cond STRING,
-    userid LIKE user.userid,
-    fname LIKE user.fname,
-    lname LIKE user.lname,
-    primary_email LIKE user.primary_email,
-    secondary_email LIKE user.secondary_email,
-    seeking_employment LIKE user.seeking_employment,
-    company LIKE USER.company,
-    contact_date LIKE user.contact_date,
-    phone_num LIKE user.phone_num,
-    reason_for_cert LIKE user.reason_for_cert
+    DEFINE
+        sql_cond STRING,
+        userid LIKE user.userid
 
-    --open a window with the user info form 
+    --open a window with the user info form
     OPEN WINDOW w2 WITH FORM "user_info_form"
 
     MENU
         ON ACTION query_users
-          WHILE TRUE --create a scenario where the search query field can be autopopulated and can be used directly without creating any action button
-            LET sql_cond = userid_query() --retrieve sql condition from form fields
-            IF sql_cond IS NULL THEN 
-               EXIT WHILE
-            END IF
+            WHILE TRUE --create a scenario where the search query field can be autopopulated and can be used directly without creating any action button
+                LET sql_cond =
+                    userlist_query() --retrieve sql condition from form fields
+                IF sql_cond IS NULL THEN
+                    EXIT WHILE
+                END IF
 
-            LET userid = userarr_display(sql_cond) 
-            CASE
-            WHEN userid < 0
-               EXIT WHILE
-            WHEN userid == 0
-               MESSAGE "Now rows found!"
-            OTHERWISE
-               MESSAGE SFMT("account #%1 was selected",userid)
-               CALL userarr_input() --This allows you to update the user selected in the query
-            END CASE
-        END WHILE
+                LET userid = userarr_display(sql_cond)
+                CASE
+                    WHEN userid < 0
+                        EXIT WHILE
+                    WHEN userid == 0
+                        MESSAGE "Now rows found!"
+                    OTHERWISE
+                        MESSAGE SFMT("user #%1 was selected", userid)
 
-        --calls function to input, update, or delete user information
+                        CALL user_update() --This allows you to update the user selected in the query
+                        EXIT WHILE
+                END CASE
+
+            END WHILE
+
+            --calls function to input, update, or delete user information
         ON ACTION input_user
-            CALL userarr_input()
+            CLEAR FORM
+            CALL user_input()
+
         ON ACTION QUIT
             EXIT MENU
-        
+
     END MENU
     CLOSE WINDOW w2
- 
+
 END FUNCTION
 
---function create sql condition based on form fields
-FUNCTION userid_query() RETURNS STRING
-DEFINE sql_cond STRING
+FUNCTION user_input()
+    DEFINE x INTEGER
+    LET int_flag = FALSE
+    CALL userarr.clear()
 
-  CLEAR FORM 
+    INPUT ARRAY userarr
+        FROM record1.* --get an input array from the screen array
+        ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
+            APPEND ROW = FALSE,
+            DELETE ROW = FALSE,
+            WITHOUT DEFAULTS)
 
-  LET int_flag = FALSE
-  --construct sql query on the input in the user form
-  CONSTRUCT BY NAME sql_cond ON user.userid, user.fname, user.lname, user.primary_email, user.secondary_email, user.company, user.contact_date, user.reason_for_cert, user.seeking_employment, user.phone_num --make an sql query based on fields in the userid field
+        BEFORE INSERT --make insert button, insert onto bottom
 
-  IF int_flag THEN
-     RETURN NULL
-  ELSE
-     RETURN sql_cond 
-  END IF
+            LET x = arr_curr() --x is the current array
+
+        BEFORE ROW
+            CALL DIALOG.setFieldActive("userid", FALSE)
+
+        AFTER ROW
+            IF int_flag THEN
+                EXIT INPUT
+            END IF
+            LET x = arr_curr()
+
+            TRY --insert the orders
+                LET userarr[x].userid = userarr[x].fname || userarr[x].lname
+                INSERT INTO user VALUES(userarr[x].*)
+                MESSAGE "Record has been inserted successfully"
+            CATCH
+                ERROR SQLERRMESSAGE
+                NEXT FIELD CURRENT
+            END TRY
+
+    END INPUT
+
+END FUNCTION
+
+PRIVATE FUNCTION userlist_query() RETURNS STRING
+    DEFINE sql_cond STRING
+
+    CLEAR FORM --clear the form
+
+    LET int_flag = FALSE
+    --translates to select * from account (where userid = value) where is construct
+    CONSTRUCT BY NAME sql_cond
+        ON user.* --make an sql query based on fields in the userid field
+
+    CLEAR FORM
+    IF int_flag THEN
+        RETURN NULL
+    ELSE
+        RETURN sql_cond --return the sql condition
+    END IF
 
 END FUNCTION
 
 PRIVATE FUNCTION userarr_fill(sql_cond STRING) RETURNS INTEGER
-  DEFINE sql_text STRING,
-         rec t_user_rec,
-         x INTEGER
+    DEFINE
+        sql_text STRING,
+        rec t_user_rec,
+        x INTEGER
 
-  LET sql_text = "SELECT * FROM User" --creates initial sql query to get all entries in user table
-  
-  IF sql_cond IS NOT NULL THEN
-     LET sql_text = sql_text || " WHERE " || sql_cond --make full query with the where condition
-  END IF
-  
-  LET sql_text = sql_text || " ORDER BY user.userid"
+    LET sql_text = "SELECT * FROM user" --text to get all info from account
 
-  DECLARE ca_curs CURSOR FROM sql_text --defining a cursor with the sql query
+    IF sql_cond IS NOT NULL THEN
+        LET sql_text =
+            sql_text
+                || " WHERE "
+                || sql_cond --make full query with the where condition
+    END IF
 
-  --empty the array before you fill it again
+    LET sql_text = sql_text || " ORDER BY user.userid"
+
+    DECLARE ca_curs CURSOR FROM sql_text --defining a cursor with the sql query
+
+    --empty the array before you fill it again
     CALL userarr.clear()
-    --CALL useratt.clear() !!!
+    CALL useratt.clear()
 
---store query results in userarr
-  FOREACH ca_curs INTO rec.* 
-     LET x = x + 1 
-     LET userarr[x] = rec 
-  END FOREACH
+    --takes all of the records on by one into the variable
+    FOREACH ca_curs INTO rec.* --for the sql query into account
+        LET x = x + 1 --incrementing index of array to store vals of db
+        LET userarr[x] = rec
+    END FOREACH
 
-  CLOSE ca_curs
-  FREE ca_curs
+    CLOSE ca_curs
+    FREE ca_curs
 
-  RETURN userarr.getLength() --returns the number of user entries returned by the 
-
-END FUNCTION
-
-PRIVATE FUNCTION userarr_display(sql_cond STRING) RETURNS (LIKE User.userid)
-  DEFINE cnt INTEGER,
-         x INTEGER
-
-  LET cnt = userarr_fill(sql_cond)  --populate userarr based on the sql query passed
-  IF cnt == 0 THEN
-     RETURN 0 --no user records are returned by the query
-  END IF
-
-  LET int_flag = FALSE 
-
-  DISPLAY ARRAY userarr TO record1.* ATTRIBUTES(UNBUFFERED)
-  --tranfering userarr dynamic array values to the screen array (populating the form)
-     BEFORE DISPLAY  
-        MESSAGE "" --clears any existing message on the screen
-        --CALL DIALOG.setArrayAttributes("record1", useratt) --dialog box that appears on screen, i dont know if i need this!!!
-        --?
-      --executed each time a new row is selected/entered in a display/input arrya dialog  
-     BEFORE ROW 
-        LET x = DIALOG.getCurrentRow("record1")  --retrieves the index of the currently selected row in the array
-        DISPLAY userarr[x].userid, --outputs the values to the form
-                userarr[x].fname,
-                userarr[x].lname,
-                userarr[x].primary_email,
-                userarr[x].secondary_email,
-                userarr[x].contact_date,
-                userarr[x].seeking_employment,
-                userarr[x].phone_num,
-                userarr[x].reason_for_cert
-                
-    --executed after the display dialog has finished displaying data
-     AFTER DISPLAY
-        LET x = DIALOG.getCurrentRow("record1") --just a dialog box
-     ON ACTION refresh ATTRIBUTES(TEXT="Refresh",ACCELERATOR="F5")
-        LET cnt = userarr_fill(sql_cond)
-  END DISPLAY
-
-  IF int_flag THEN
-     RETURN -1
-  ELSE
-     RETURN userarr[x].userid
-  END IF
-
+    RETURN userarr.getLength()
 
 END FUNCTION
 
-PRIVATE FUNCTION userarr_input() RETURNS ()
-  DEFINE x INTEGER
-  DEFINE op CHAR(1)
+PRIVATE FUNCTION userarr_display(sql_cond STRING) RETURNS(LIKE user.userid)
+    DEFINE
+        cnt INTEGER,
+        x INTEGER
 
-  LET int_flag = FALSE
-    
-  INPUT ARRAY userarr FROM record1.* --get an input array from the screen array
-          ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
-                     CANCEL = FALSE,
-                     WITHOUT DEFAULTS)
+    LET cnt =
+        userarr_fill(sql_cond) --gets a count of the number of rows returned
+    IF cnt == 0 THEN
+        RETURN 0
+    END IF
 
-     BEFORE DELETE --to delete from the form, delete button
-        DISPLAY "BEFORE DELETE: op=",op
-        IF op == "N" THEN
-           LET x = arr_curr() --pointer in cursor to get the current row
-           IF NOT utils.mbox_yn("user",
-                "Are you sure you want to delete this record?") --make sure user wants to delete the reord
-           THEN
-              CANCEL DELETE
-           END IF
-           TRY
-              DELETE FROM User
-                  WHERE userid = userarr[x].userid --delete the record from the order array where the orderid matches what was in the screen array
-           CATCH
-              ERROR SQLERRMESSAGE
-              CANCEL DELETE
-           END TRY
-        END IF
+    LET int_flag = FALSE --unsets the actions so you can do another action
+--sa_user is the name of the form, double click outside the form to change the name
+    DISPLAY ARRAY userarr TO record1.* ATTRIBUTES(UNBUFFERED)
+        --tranfering acctarr dynamic array values to the screen array (populating the form)
+        BEFORE DISPLAY
 
-     AFTER DELETE --after the row has been deleted, give message
-        DISPLAY "AFTER DELETE: op=",op
-        IF op == "N" THEN
-           MESSAGE "Record has been deleted successfully"
-        ELSE
-           LET op = "N"
-        END IF
+            MESSAGE ""
+            CALL DIALOG.setArrayAttributes(
+                "record1", useratt) --dialog box that appears on screen
 
+        AFTER DISPLAY
+            LET x = DIALOG.getCurrentRow("record1") --just a dialog box
+        ON ACTION refresh ATTRIBUTES(TEXT = "Refresh", ACCELERATOR = "F5")
+            LET cnt = userarr_fill(sql_cond)
+    END DISPLAY
 
-     ON ROW CHANGE 
-        DISPLAY "ON ROW CHANGE: op=",op
-        IF op != "I" THEN LET op = "M" END IF
+    IF int_flag THEN
+        RETURN -1
+    ELSE
+        RETURN userarr[x].userid
+    END IF
 
-    
-     BEFORE INSERT --make insert button, insert onto bottom
-        
-        DISPLAY "BEFORE INSERT: op=",op
-        LET op = "T" --?
-        LET x = arr_curr() --x is the current array
-        LET userarr[x].userid = "<userid auto generated>" --sets a default value for userid
+END FUNCTION
 
-     AFTER INSERT
-        DISPLAY "AFTER INSERT: op=",op
-        LET op = "I"
+FUNCTION user_update()
 
-     BEFORE ROW
-        DISPLAY "BEFORE ROW: op=",op
-        LET op = "N"
-        CALL DIALOG.setFieldActive("userid", FALSE) --make the user unable to input into the userid form field since the userid is generated by the program
+    DEFINE x INTEGER
 
-     AFTER ROW
-        DISPLAY "AFTER ROW: op=",op
-        IF int_flag THEN EXIT INPUT END IF
-        LET x = arr_curr() 
-        LET userarr[x].userid = userarr[x].fname||userarr[x].lname||x --create userid as firstname+lastname+record#
-        IF op == "I" THEN
-           TRY --insert the orders 
-              INSERT INTO User VALUES (userarr[x].*)
-              MESSAGE "Record has been inserted successfully"
-           CATCH
-              ERROR SQLERRMESSAGE
-              NEXT FIELD CURRENT
-           END TRY
+    LET int_flag = FALSE
 
-        END IF
-        IF op == "M" THEN
-           TRY --update orders
-              LET x = arr_curr()
-              UPDATE user SET user.* = userarr[x].*
-                  WHERE userid = userarr[x].userid
-              MESSAGE "Record has been updated successfully"
-           CATCH
-              ERROR "Could not update the record in database!"
-              NEXT FIELD CURRENT
-           END TRY
-        END IF
+    INPUT ARRAY userarr
+        FROM record1.* --get an input array from the screen array
+        ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
+            APPEND ROW = FALSE,
+            INSERT ROW = FALSE,
+            DELETE ROW = FALSE,
+            WITHOUT DEFAULTS)
 
-  END INPUT
+        BEFORE INSERT --make insert button, insert onto bottom
+            LET x = arr_curr() --x is the current array
 
+        BEFORE ROW
+            CALL DIALOG.setFieldActive("userid", FALSE)
+
+        AFTER ROW
+            IF int_flag THEN
+                EXIT INPUT
+            END IF
+            LET x = arr_curr()
+
+            TRY --insert the orders
+                UPDATE USER
+                    SET user.* = userarr[x].*
+                    WHERE user.userid = userarr[x].userid
+                MESSAGE "Record has been updated successfully"
+
+            CATCH
+                ERROR SQLERRMESSAGE
+                NEXT FIELD CURRENT
+            END TRY
+
+    END INPUT
 END FUNCTION

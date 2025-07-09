@@ -73,7 +73,7 @@
   <Group id="75644415" label="Group" language="Genero">
     <Application binaryName="Application" dependencies="14000,1986" environment="dirlist:FGLDBPATH=$(ProjectDir)/db,filelist:FGLPROFILE=$(ProjectDir)/fglprofile,dirlist:DBPATH=$(ProjectDir)/db" id="18736" label="Application">
       <VirtualFolder label="forms">
-        <File filePath="form/knowledge_test_form.4fd"/>
+        <File filePath="src/knowledge_test_form.4fd"/>
         <File filePath="form/main_menu_form.4fd"/>
         <File filePath="src/practical_test_form.4fd"/>
         <File filePath="form/user_info_form.4fd"/>
@@ -88,10 +88,10 @@
     </Application>
     <Library binaryName="Databases" id="1986" label="Databases">
       <Configuration binaryName="Databases" cwd="$(ProjectDir)/bin" environment="dirlist:DBPATH=$(ProjectDir)/db,filelist:FGLPROFILE=$(ProjectDir)/fglprofile" id="-290344563" label="Databases"/>
+      <File filePath="db/cert_trackerdb_2.4db"/>
       <File filePath="db/certtrackerdb.4db"/>
       <File filePath="db/certtrackerdb.db"/>
       <File filePath="db/certtrackerdb_creationscript.4gl"/>
-      <File filePath="db/db_creation_test.4db"/>
     </Library>
     <Library binaryName="Library" dependencies="1986" id="14000" label="Library"/>
   </Group>

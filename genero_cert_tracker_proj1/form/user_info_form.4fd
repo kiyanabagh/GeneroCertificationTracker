@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ManagedForm databaseName="certtrackerdb" fileVersion="40100" gstVersion="50102" name="managedform" uid="{eae3a739-010a-46ab-9bba-7565f20db78c}">
+<ManagedForm databaseName="cert_trackerdb_2" fileVersion="40100" gstVersion="50102" name="managedform" uid="{29731322-ea05-454a-81be-6732692921e5}">
   <AGSettings>
     <DynamicProperties version="4"/>
   </AGSettings>
-  <Record masterTable="User" name="record1" uid="{598c16aa-c9b5-41a4-af68-42a8a485272e}">
-    <RecordField colName="userid" fieldIdRef="1" fieldType="TABLE_COLUMN" name="User.userid" sqlTabName="User" uid="{0b44de47-cfc8-4492-b8f2-0910460eaa19}"/>
-    <RecordField colName="fname" fieldIdRef="2" fieldType="TABLE_COLUMN" name="User.fname" sqlTabName="User" uid="{5eec787e-298d-44fd-b5e9-52bcb20c36d9}"/>
-    <RecordField colName="lname" fieldIdRef="3" fieldType="TABLE_COLUMN" name="User.lname" sqlTabName="User" uid="{4cee2aff-2b6e-43a9-93d1-6166ebc69b3f}"/>
-    <RecordField colName="primary_email" fieldIdRef="4" fieldType="TABLE_COLUMN" name="User.primary_email" sqlTabName="User" uid="{005e7e81-ccbc-47e4-bd7b-218062e04e79}"/>
-    <RecordField colName="secondary_email" fieldIdRef="5" fieldType="TABLE_COLUMN" name="User.secondary_email" sqlTabName="User" uid="{a17f173d-1aee-471a-8220-8c7a9b5efb5a}"/>
-    <RecordField colName="phone_num" fieldIdRef="6" fieldType="TABLE_COLUMN" name="User.phone_num" sqlTabName="User" uid="{175e05ff-fafe-4295-a6ff-b73a6e2e5160}"/>
-    <RecordField colName="company" fieldIdRef="7" fieldType="TABLE_COLUMN" name="User.company" sqlTabName="User" uid="{4e35684e-ba89-4c75-8c48-98d35feffdaa}"/>
-    <RecordField colName="contact_date" fieldIdRef="8" fieldType="TABLE_COLUMN" name="User.contact_date" sqlTabName="User" uid="{027b7cc0-7e31-48b5-ab35-804fa60b578a}"/>
-    <RecordField colName="reason_for_cert" fieldIdRef="9" fieldType="TABLE_COLUMN" name="User.reason_for_cert" sqlTabName="User" uid="{d119a4e8-cc66-4ded-b3bd-1d970b364d71}"/>
-    <RecordField colName="seeking_employment" fieldIdRef="10" fieldType="TABLE_COLUMN" name="User.seeking_employment" sqlTabName="User" uid="{b38a1e0f-ef38-413e-ac50-3f1cef95803c}"/>
+  <Record masterTable="user" name="record1" uid="{573ead4e-2171-45ab-8375-866bba4d0611}">
+    <RecordField colName="userid" fieldIdRef="1" fieldType="TABLE_COLUMN" name="user.userid" sqlTabName="user" uid="{30a15885-23e2-4532-bea6-71f41b9bddd1}"/>
+    <RecordField colName="fname" fieldIdRef="2" fieldType="TABLE_COLUMN" name="user.fname" sqlTabName="user" uid="{5995f641-fa06-49f4-a648-23acb564aedc}"/>
+    <RecordField colName="lname" fieldIdRef="3" fieldType="TABLE_COLUMN" name="user.lname" sqlTabName="user" uid="{b48f784f-e20f-4469-ae0a-23346547480f}"/>
+    <RecordField colName="primary_email" fieldIdRef="4" fieldType="TABLE_COLUMN" name="user.primary_email" sqlTabName="user" uid="{577da367-2cb9-43bd-b523-2868256eb3e5}"/>
+    <RecordField colName="secondary_email" fieldIdRef="5" fieldType="TABLE_COLUMN" name="user.secondary_email" sqlTabName="user" uid="{c0e0e9fe-ea7e-4283-9ec6-763bf647f98e}"/>
+    <RecordField colName="phone_num" fieldIdRef="6" fieldType="TABLE_COLUMN" name="user.phone_num" sqlTabName="user" uid="{7fb28773-deb0-4602-b74d-afa16cce0364}"/>
+    <RecordField colName="company" fieldIdRef="7" fieldType="TABLE_COLUMN" name="user.company" sqlTabName="user" uid="{a3a548e7-3965-4363-9009-689606f7cf9f}"/>
+    <RecordField colName="contact_date" fieldIdRef="8" fieldType="TABLE_COLUMN" name="user.contact_date" sqlTabName="user" uid="{3cfcbc52-42c8-47a9-a394-3abfb24312c4}"/>
+    <RecordField colName="reason_for_cert" fieldIdRef="9" fieldType="TABLE_COLUMN" name="user.reason_for_cert" sqlTabName="user" uid="{45393d79-73ed-460e-9f7b-4121d92c0962}"/>
+    <RecordField colName="seeking_employment" fieldIdRef="10" fieldType="TABLE_COLUMN" name="user.seeking_employment" sqlTabName="user" uid="{2aaac37a-90ff-401a-ba89-2b74620e5d3f}"/>
   </Record>
-  <Form gridHeight="11" gridWidth="100" name="form" text="Form">
-    <Grid gridHeight="10" gridWidth="98" name="certtrackerdb1" posX="1" posY="1">
-      <Label gridHeight="1" gridWidth="15" justify="left" name="User_userid_label1" posX="1" posY="1">
-        <Initializer text="dbschema:User.userid/@label"/>
+  <Form gridHeight="9" gridWidth="100" name="form" text="Form">
+    <Grid gridHeight="7" gridWidth="98" name="cert_trackerdb_21" posX="1" posY="1">
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_userid_label1" posX="1" posY="1">
+        <Initializer text="dbschema:user.userid/@label"/>
       </Label>
-      <Edit colName="userid" fieldId="1" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.userid" posX="17" posY="1" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="userid" fieldId="1" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.userid" posX="17" posY="1" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="18" justify="left" name="User_fname_label1" posX="48" posY="1">
-        <Initializer text="dbschema:User.fname/@label"/>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_fname_label1" posX="48" posY="1">
+        <Initializer text="dbschema:user.fname/@label"/>
       </Label>
-      <Edit colName="fname" fieldId="2" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.fname" posX="67" posY="1" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="fname" fieldId="2" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.fname" posX="67" posY="1" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="15" justify="left" name="User_lname_label1" posX="1" posY="2">
-        <Initializer text="dbschema:User.lname/@label"/>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_lname_label1" posX="1" posY="2">
+        <Initializer text="dbschema:user.lname/@label"/>
       </Label>
-      <Edit colName="lname" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.lname" posX="17" posY="2" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="lname" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.lname" posX="17" posY="2" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="18" justify="left" name="User_primary_email_label1" posX="48" posY="2">
-        <Initializer text="dbschema:User.primary_email/@label"/>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_primary_email_label1" posX="48" posY="2">
+        <Initializer text="dbschema:user.primary_email/@label"/>
       </Label>
-      <Edit colName="primary_email" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.primary_email" posX="67" posY="2" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="primary_email" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.primary_email" posX="67" posY="2" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="15" justify="left" name="User_secondary_email_label1" posX="1" posY="3">
-        <Initializer text="dbschema:User.secondary_email/@label"/>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_secondary_email_label1" posX="1" posY="3">
+        <Initializer text="dbschema:user.secondary_email/@label"/>
       </Label>
-      <Edit colName="secondary_email" fieldId="5" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.secondary_email" posX="17" posY="3" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="secondary_email" fieldId="5" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.secondary_email" posX="17" posY="3" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="18" justify="left" name="User_phone_num_label1" posX="48" posY="3">
-        <Initializer text="dbschema:User.phone_num/@label"/>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_phone_num_label1" posX="48" posY="3">
+        <Initializer text="dbschema:user.phone_num/@label"/>
       </Label>
-      <Edit colName="phone_num" fieldId="6" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="11" name="User.phone_num" posX="67" posY="3" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="phone_num" fieldId="6" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="11" name="user.phone_num" posX="67" posY="3" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="15" justify="left" name="User_company_label1" posX="1" posY="4">
-        <Initializer text="dbschema:User.company/@label"/>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_company_label1" posX="1" posY="4">
+        <Initializer text="dbschema:user.company/@label"/>
       </Label>
-      <Edit colName="company" fieldId="7" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="User.company" posX="17" posY="4" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="company" fieldId="7" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.company" posX="17" posY="4" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="18" justify="left" name="User_contact_date_label1" posX="48" posY="4">
-        <Initializer text="dbschema:User.contact_date/@label"/>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_contact_date_label1" posX="48" posY="4">
+        <Initializer text="dbschema:user.contact_date/@label"/>
       </Label>
-      <DateEdit colName="contact_date" fieldId="8" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="User.contact_date" posX="67" posY="4" sqlTabName="User" tabIndex="-1" widget="DateEdit">
+      <DateEdit colName="contact_date" fieldId="8" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="user.contact_date" posX="67" posY="4" sqlTabName="user" tabIndex="-1" widget="DateEdit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </DateEdit>
-      <Label gridHeight="1" gridWidth="15" justify="left" name="User_reason_for_cert_label1" posX="1" posY="5">
-        <Initializer text="dbschema:User.reason_for_cert/@label"/>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_reason_for_cert_label1" posX="1" posY="5">
+        <Initializer text="dbschema:user.reason_for_cert/@label"/>
       </Label>
-      <Edit colName="reason_for_cert" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="User.reason_for_cert" posX="17" posY="5" scroll="true" sqlTabName="User" tabIndex="-1" widget="Edit">
+      <Edit colName="reason_for_cert" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="user.reason_for_cert" posX="17" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
       </Edit>
-      <Label gridHeight="1" gridWidth="18" justify="left" name="User_seeking_employment_label1" posX="48" posY="5">
-        <Initializer text="dbschema:User.seeking_employment/@label"/>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_seeking_employment_label1" posX="48" posY="5">
+        <Initializer text="dbschema:user.seeking_employment/@label"/>
       </Label>
-      <ButtonEdit colName="seeking_employment" fieldId="10" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="2" name="User.seeking_employment" posX="67" posY="5" sqlTabName="User" tabIndex="-1" widget="ButtonEdit">
+      <Edit colName="seeking_employment" fieldId="10" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="1" name="user.seeking_employment" posX="67" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
-      </ButtonEdit>
-      <Button gridHeight="1" gridWidth="12" name="query_users" posX="12" posY="7" tabIndex="-1" text="Query Users"/>
-      <Button gridHeight="1" gridWidth="12" name="input_user" posX="30" posY="7" tabIndex="-1" text="Input or Edit Users"/>
+      </Edit>
+      <Button gridHeight="1" gridWidth="25" name="query_users" posX="12" posY="6" tabIndex="-1" text="Query/Update Existing Users"/>
+      <Button gridHeight="1" gridWidth="11" name="input_user" posX="41" posY="6" tabIndex="-1" text="Input New User"/>
     </Grid>
   </Form>
   <DiagramLayout>
-    <![CDATA[AAAAAgAAAEwAewA1ADkAOABjADEANgBhAGEALQBjADkAYgA1AC0ANAAxAGEANAAtAGEAZgA2ADgALQA0ADIAYQA4AGEANAA4ADUAMgA3ADIAZQB9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==]]>
+    <![CDATA[AAAAAgAAAEwAewA1ADcAMwBlAGEAZAA0AGUALQAyADEANwAxAC0ANAA1AGEAYgAtADgAMwA3ADUALQA4ADYANgBiAGIAYQA0AGQAMAA2ADEAMQB9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==]]>
   </DiagramLayout>
 </ManagedForm>

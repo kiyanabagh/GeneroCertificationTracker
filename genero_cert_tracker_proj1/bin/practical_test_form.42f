@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='windows-1252'?>
-<Form name="practical_test_form.tmp" build="5.01.02" sqlDbName="db_creation_test" text="Form" width="91" height="7">
+<Form name="practical_test_form.tmp" build="5.01.02" sqlDbName="cert_trackerdb_2" text="Form" width="91" height="7">
   <LStr text="Form"/>
-  <Grid name="db_creation_test1" width="91" height="7">
+  <Grid name="cert_trackerdb_21" width="91" height="7">
     <Label name="practicaltest_userid_label1" width="14" text="userid" justify="left" posY="1" posX="1" gridWidth="14">
       <LStr text="userid"/>
     </Label>
@@ -24,13 +24,23 @@
       <LStr text="status"/>
     </Label>
     <FormField name="practicaltest.status" colName="status" sqlType="BIGINT" required="1" notNull="1" fieldId="3" sqlTabName="practicaltest" tabIndex="4">
-      <Edit width="20" scroll="1" posY="2" posX="60" gridWidth="20"/>
+      <ComboBox width="18" scroll="1" posY="2" posX="60" gridWidth="20">
+        <Item name="1" text="Scenario sent to user / in progress"/>
+        <Item name="3" text="Scenario completed and turned in for grading"/>
+        <Item name="4" text="Grading completed - passed"/>
+        <Item name="5" text="Grading completed - fail"/>
+      </ComboBox>
     </FormField>
     <Label name="practicaltest_scenario_label1" width="14" text="scenario" justify="left" posY="3" posX="1" gridWidth="14">
       <LStr text="scenario"/>
     </Label>
     <FormField name="practicaltest.scenario" colName="scenario" sqlType="BIGINT" required="1" notNull="1" fieldId="4" sqlTabName="practicaltest" tabIndex="5">
-      <Edit width="20" scroll="1" posY="3" posX="16" gridWidth="20"/>
+      <ComboBox width="18" scroll="1" posY="3" posX="16" gridWidth="20">
+        <Item name="1" text="Scenario 1"/>
+        <Item name="2" text="Scenario 2"/>
+        <Item name="3" text="Scenario 3"/>
+        <Item name="4" text="Scenario 4"/>
+      </ComboBox>
     </FormField>
     <Label name="practicaltest_date_started_label1" width="12" text="date_started" justify="left" posY="3" posX="47" gridWidth="12">
       <LStr text="date_started"/>
@@ -42,7 +52,7 @@
       <LStr text="date_completed"/>
     </Label>
     <FormField name="practicaltest.date_completed" colName="date_completed" sqlType="DATE" fieldId="6" sqlTabName="practicaltest" tabIndex="7">
-      <DateTimeEdit width="10" scroll="1" posY="4" posX="16" gridWidth="10"/>
+      <DateEdit width="8" posY="4" posX="16" gridWidth="10"/>
     </FormField>
     <Label name="practicaltest_comment_label1" width="12" text="comment" justify="left" posY="4" posX="47" gridWidth="12">
       <LStr text="comment"/>
@@ -56,12 +66,6 @@
     <FormField name="practicaltest.genero_version" colName="genero_version" sqlType="VARCHAR(50)" fieldId="8" sqlTabName="practicaltest" tabIndex="9">
       <Edit width="30" scroll="1" posY="5" posX="16" gridWidth="30"/>
     </FormField>
-    <Button name="query_ptests" width="12" text="Query Practical Tests" posY="6" posX="24" gridWidth="12" tabIndex="10">
-      <LStr text="Query Practical Tests"/>
-    </Button>
-    <Button name="input_practicaltest" width="21" text="Input and Update Practical Test Info" posY="6" posX="40" gridWidth="21" tabIndex="11">
-      <LStr text="Input and Update Practical Test Info"/>
-    </Button>
   </Grid>
   <RecordView tabName="practicaltest">
     <Link colName="userid" fieldIdRef="0"/>

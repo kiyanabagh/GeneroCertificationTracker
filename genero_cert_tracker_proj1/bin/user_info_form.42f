@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='windows-1252'?>
-<Form name="user_info_form.tmp" build="5.01.02" sqlDbName="certtrackerdb" text="Form" width="98" height="10">
+<Form name="user_info_form.tmp" build="5.01.02" sqlDbName="cert_trackerdb_2" text="Form" width="98" height="7">
   <LStr text="Form"/>
-  <Grid name="certtrackerdb1" width="98" height="10">
+  <Grid name="cert_trackerdb_21" width="98" height="7">
     <Label name="user_userid_label1" width="15" text="userid" justify="left" posY="1" posX="1" gridWidth="15">
       <LStr text="userid"/>
     </Label>
@@ -60,13 +60,13 @@
       <LStr text="seeking_employment"/>
     </Label>
     <FormField name="user.seeking_employment" colName="seeking_employment" sqlType="BOOLEAN" fieldId="9" sqlTabName="user" tabIndex="10">
-      <ButtonEdit width="2" posY="5" posX="67" gridWidth="2"/>
+      <Edit width="1" scroll="1" posY="5" posX="67" gridWidth="1"/>
     </FormField>
-    <Button name="query_users" width="12" text="Query Users" posY="7" posX="12" gridWidth="12" tabIndex="11">
-      <LStr text="Query Users"/>
+    <Button name="query_users" width="25" text="Query/Update Existing Users" posY="6" posX="12" gridWidth="25" tabIndex="11">
+      <LStr text="Query/Update Existing Users"/>
     </Button>
-    <Button name="input_user" width="12" text="Input or Edit Users" posY="7" posX="30" gridWidth="12" tabIndex="12">
-      <LStr text="Input or Edit Users"/>
+    <Button name="input_user" width="11" text="Input New User" posY="6" posX="41" gridWidth="11" tabIndex="12">
+      <LStr text="Input New User"/>
     </Button>
   </Grid>
   <RecordView tabName="user">

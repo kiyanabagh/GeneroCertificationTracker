@@ -1,6 +1,6 @@
 IMPORT FGL utils
 
-SCHEMA db_creation_test
+SCHEMA cert_trackerdb_2
 
     TYPE t_ktest_rec RECORD LIKE knowledgetest.*
     TYPE t_ktestarray DYNAMIC ARRAY OF t_ktest_rec
@@ -18,263 +18,218 @@ DEFINE ktestatt DYNAMIC ARRAY OF RECORD
 --the function called when knowledge test info button is selected from main menu
 FUNCTION knowledge_test_driver()
 
+--define function variables for the sql conditions and fields of the form
+    DEFINE
+        sql_cond STRING,
+        testid LIKE knowledgetest.testid
 
-  DEFINE sql_cond STRING,
-    userid LIKE knowledgetest.userid,
-    testid LIKE knowledgetest.testid,
-    grade LIKE knowledgetest.grade,
-    date_completed LIKE knowledgetest.date_completed,
-    genero_version LIKE knowledgetest.genero_version
-    --track the number of knowledge test records currently 
-    LET record_count = ktest_record_count()
+    --open a window with the user info form
+    OPEN WINDOW w2 WITH FORM "knowledge_test_form"
 
-    
-    OPEN WINDOW w3 WITH FORM "knowledge_test_form"
     MENU
-    ON ACTION query_ktests
-          WHILE TRUE --create a scenario where the search query field can be autopopulated and can be used directly without creating any action button
-        --loop only functions when the sql condition has something
-            LET sql_cond = testid_query() --call acclist query to get sql condition
-            IF sql_cond IS NULL THEN 
-               EXIT WHILE
-            END IF
+        ON ACTION query_knowledge_test
+            WHILE TRUE --create a scenario where the search query field can be autopopulated and can be used directly without creating any action button
+                LET sql_cond =
+                    knowledge_testlist_query() --retrieve sql condition from form fields
+                IF sql_cond IS NULL THEN
+                    EXIT WHILE
+                END IF
 
-            LET testid = ktestarr_display(sql_cond) --
-            CASE
-            WHEN testid < 0
-               EXIT WHILE
-            WHEN testid == 0
-               MESSAGE "Now rows found!"
-            OTHERWISE
-               MESSAGE SFMT("ktest #%1 was selected",testid)
-               CALL ktestarr_input()
-            END CASE
-        END WHILE
+                LET testid = knowledge_testarr_display(sql_cond)
+                CASE
+                    WHEN testid < 0
+                        EXIT WHILE
+                    WHEN testid == 0
+                        MESSAGE "Now rows found!"
+                    OTHERWISE
+                        MESSAGE SFMT("knowledge_test #%1 was selected", testid)
 
-        ON ACTION input_knowledgetest
-            
-            CALL ktestarr_input()
+                        CALL knowledge_test_update() --This allows you to update the user selected in the query
+                        EXIT WHILE
+                END CASE
+
+            END WHILE
+
+            --calls function to input, update, or delete user information
+        ON ACTION input_knowledge_test
+            CLEAR FORM
+            CALL knowledge_test_input()
+
         ON ACTION QUIT
             EXIT MENU
-        
+
     END MENU
-
-    CLOSE WINDOW w3
-END FUNCTION
-
-
-FUNCTION testid_query() RETURNS STRING
-DEFINE sql_cond STRING
-
-  CLEAR FORM 
-
-  LET int_flag = FALSE
-  --allows user to query on all fields in the form
-  CONSTRUCT BY NAME sql_cond ON knowledgetest.userid, knowledgetest.testid, knowledgetest.grade, knowledgetest.genero_version, knowledgetest.date_completed
-
-  IF int_flag THEN
-     RETURN NULL
-  ELSE
-     RETURN sql_cond 
-  END IF
+    CLOSE WINDOW w2
 
 END FUNCTION
 
-PRIVATE FUNCTION ktestarr_fill(sql_cond STRING) RETURNS INTEGER
-  DEFINE sql_text STRING,
-         rec t_ktest_rec,
-         x INTEGER
+FUNCTION knowledge_test_input()
+    DEFINE x INTEGER, lname LIKE user.lname
+    LET int_flag = FALSE
+    CALL ktestarr.clear()
 
-  LET sql_text = "SELECT * FROM knowledgetest" --creates initial sql query to get all entries in knowledgetest table
-  
-  IF sql_cond IS NOT NULL THEN
-     LET sql_text = sql_text || " WHERE " || sql_cond --make full query with the where condition
-  END IF
-  
-  LET sql_text = sql_text || " ORDER BY knowledgetest.userid"
+    INPUT ARRAY ktestarr
+        FROM record1.* --get an input array from the screen array
+        ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
+            APPEND ROW = FALSE,
+            DELETE ROW = FALSE,
+            WITHOUT DEFAULTS)
 
-  DECLARE ca_curs CURSOR FROM sql_text --defining a cursor with the sql query
+        BEFORE INSERT --make insert button, insert onto bottom
 
-  --empty the array before you fill it again
+            LET x = arr_curr() --x is the current array
+
+        BEFORE ROW
+            CALL DIALOG.setFieldActive("testid", FALSE)
+
+        AFTER ROW
+            IF int_flag THEN
+                EXIT INPUT
+            END IF
+            LET x = arr_curr()
+
+            TRY --insert the orders
+                SELECT user.lname INTO lname FROM USER WHERE user.userid = ktestarr[x].userid
+                LET ktestarr[x].testid = ktestarr[x].genero_version || "_"|| lname
+                INSERT INTO knowledgetest VALUES(ktestarr[x].*)
+                MESSAGE "Record has been inserted successfully"
+            CATCH
+                ERROR SQLERRMESSAGE
+                NEXT FIELD CURRENT
+            END TRY
+
+    END INPUT
+
+END FUNCTION
+
+PRIVATE FUNCTION knowledge_testlist_query() RETURNS STRING
+    DEFINE sql_cond STRING
+
+    CLEAR FORM --clear the form
+
+    LET int_flag = FALSE
+    --translates to select * from account (where knowledge_testid = value) where is construct
+    CONSTRUCT BY NAME sql_cond
+        ON knowledgetest.* --make an sql query based on fields in the userid field
+
+    CLEAR FORM
+    IF int_flag THEN
+        RETURN NULL
+    ELSE
+        RETURN sql_cond --return the sql condition
+    END IF
+
+END FUNCTION
+
+PRIVATE FUNCTION knowledge_testarr_fill(sql_cond STRING) RETURNS INTEGER
+    DEFINE
+        sql_text STRING,
+        rec t_ktest_rec,
+        x INTEGER
+
+    LET sql_text = "SELECT * FROM knowledgetest" --text to get all info from account
+
+    IF sql_cond IS NOT NULL THEN
+        LET sql_text =
+            sql_text
+                || " WHERE "
+                || sql_cond --make full query with the where condition
+    END IF
+
+    LET sql_text = sql_text || " ORDER BY knowledgetest.testid"
+
+    DECLARE ca_curs CURSOR FROM sql_text --defining a cursor with the sql query
+
+    --empty the array before you fill it again
     CALL ktestarr.clear()
     CALL ktestatt.clear()
 
     --takes all of the records on by one into the variable
-  FOREACH ca_curs INTO rec.* --for the sql query into account
-     LET x = x + 1 --incrementing index of array to store vals of db
-     LET ktestarr[x] = rec --stores all user info from the query in the ktestarr
-  END FOREACH
-
-  CLOSE ca_curs
-  FREE ca_curs
-
-  RETURN ktestarr.getLength() --returns the number of user entries returned by the 
-
-END FUNCTION
-
-PRIVATE FUNCTION ktestarr_display(sql_cond STRING) RETURNS (LIKE knowledgetest.userid)
-  DEFINE cnt INTEGER,
-         x INTEGER
-
-  LET cnt = ktestarr_fill(sql_cond)  --gets a count of the number of rows returned
-  IF cnt == 0 THEN
-     RETURN 0
-  END IF
-
-  LET int_flag = FALSE --unsets the actions so you can do another action
---record1 is the name of the form, double click outside the form to change the name
-  DISPLAY ARRAY ktestarr TO record1.* ATTRIBUTES(UNBUFFERED)
-  --tranfering ktestarr dynamic array values to the screen array (populating the form)
-     BEFORE DISPLAY  
-        MESSAGE ""
-        CALL DIALOG.setArrayAttributes("record1", ktestatt) --dialog box that appears on screen
-        --CALL DIALOG.setSelectionMode("sa_acct", 1)
-        --this empties everything and starts it froms scratch so when you hit the next button, it gets refreshed
-     BEFORE ROW 
-        LET x = DIALOG.getCurrentRow("record1")  
-        DISPLAY ktestarr[x].userid, --you can lowk remove this, it is overwriting the display we did earlier
-                ktestarr[x].testid,
-                ktestarr[x].genero_version,
-                ktestarr[x].grade,
-                ktestarr[x].date_completed
-                
-     AFTER DISPLAY
-        LET x = DIALOG.getCurrentRow("record1") --just a dialog box
-     ON ACTION refresh ATTRIBUTES(TEXT="Refresh",ACCELERATOR="F5")
-        LET cnt = ktestarr_fill(sql_cond)
-  END DISPLAY
-
-  IF int_flag THEN
-     RETURN -1
-  ELSE
-     RETURN ktestarr[x].userid
-  END IF
-
-
-END FUNCTION
-
-
-
-PRIVATE FUNCTION ktestarr_input() RETURNS ()
-  DEFINE x INTEGER
-  DEFINE op CHAR(1)
-   DEFINE l_count INTEGER
-  --DEFINE f ui.Form 
-
-  LET int_flag = FALSE
-
-  INPUT ARRAY ktestarr FROM record1.* --get an input array from the screen array
-          ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
-                     CANCEL = FALSE,
-                     WITHOUT DEFAULTS)
-
-     BEFORE DELETE --to delete from the form, delete button
-        DISPLAY "BEFORE DELETE: op=",op
-        IF op == "N" THEN
-           LET x = arr_curr() --pointer in cursor to get the current row
-           IF NOT utils.mbox_yn("knowledgetest",
-                "Are you sure you want to delete this record?") --make sure user wants to delete the reord
-           THEN
-              CANCEL DELETE
-           END IF
-           TRY
-              DELETE FROM knowledgetest
-                  WHERE testid = ktestarr[x].testid --delete the record from the order array where the orderid matches what was in the screen array
-                LET record_count =-1
-           CATCH
-              ERROR SQLERRMESSAGE
-              CANCEL DELETE
-           END TRY
-        END IF
-
-     AFTER DELETE --after the row has been deleted, give message
-        DISPLAY "AFTER DELETE: op=",op
-        IF op == "N" THEN
-           MESSAGE "Record has been deleted successfully"
-        ELSE
-           LET op = "N"
-        END IF
-
-
-     ON ROW CHANGE 
-        DISPLAY "ON ROW CHANGE: op=",op
-        IF op != "I" THEN LET op = "M" END IF
-
-    
-     BEFORE INSERT --make insert button, insert onto bottom
-        
-        DISPLAY "BEFORE INSERT: op=",op
-        LET op = "T" --?
-        LET x = arr_curr() --x is the current array
-        LET ktestarr[x].testid = "kt_"|| record_count--set default values for what you insert
-        
-        LET ktestarr[x].userid = "<undefined>"
-
-     AFTER INSERT
-        DISPLAY "AFTER INSERT: op=",op
-        LET op = "I"
-
-     BEFORE ROW
-        DISPLAY "BEFORE ROW: op=",op
-        LET op = "N"
-        CALL DIALOG.setFieldActive("testid", FALSE)
-
-        --sees if a name is like valid or not, it cant have a number
-     AFTER ROW
-        DISPLAY "AFTER ROW: op=",op
-        IF int_flag THEN EXIT INPUT END IF
-        LET x = arr_curr() 
-        IF op == "I" THEN
-            SELECT COUNT(*) INTO l_count FROM user WHERE ktestarr[x].userid==userid
-            IF l_count = 0 
-                THEN ERROR "Invalid user ID." 
-            ELSE
-    
-               TRY --insert the orders 
-                  INSERT INTO knowledgetest VALUES ( ktestarr[x].* )
-                  LET record_count =+1
-                  MESSAGE "Record has been inserted successfully"
-               CATCH
-                  ERROR SQLERRMESSAGE
-                  NEXT FIELD CURRENT
-               END TRY
-            END IF 
-        END IF
-        IF op == "M" THEN
-           TRY --update orders
-              LET x = arr_curr()
-              UPDATE knowledgetest SET knowledgetest.* = ktestarr[x].*
-                  WHERE testid = ktestarr[x].testid
-              MESSAGE "Record has been updated successfully"
-           CATCH
-              ERROR "Could not update the record in database!"
-              NEXT FIELD CURRENT
-           END TRY
-        END IF
-
-  END INPUT
-
-END FUNCTION
-
-FUNCTION ktest_record_count()
-    DEFINE sql_text STRING, 
-    x INTEGER, 
-    count_test_rec t_ktest_rec
-
-    LET x = 0
-    LET sql_text = "SELECT * FROM knowledgetest"
-
-    DECLARE count_curs CURSOR FROM sql_text
-    
-      FOREACH count_curs INTO count_test_rec.* --for the sql query into account
+    FOREACH ca_curs INTO rec.* --for the sql query into account
         LET x = x + 1 --incrementing index of array to store vals of db
-        --stores all user info from the query in the ktestarr
-  END FOREACH
+        LET ktestarr[x] = rec
+    END FOREACH
 
-  CLOSE ca_curs
-  FREE ca_curs
+    CLOSE ca_curs
+    FREE ca_curs
 
-  RETURN x
-    
+    RETURN ktestarr.getLength()
+
+END FUNCTION
+
+PRIVATE FUNCTION knowledge_testarr_display(sql_cond STRING) RETURNS(LIKE knowledgetest.testid)
+    DEFINE
+        cnt INTEGER,
+        x INTEGER
+
+    LET cnt =
+        knowledge_testarr_fill(sql_cond) --gets a count of the number of rows returned
+    IF cnt == 0 THEN
+        RETURN 0
+    END IF
+
+    LET int_flag = FALSE --unsets the actions so you can do another action
+--sa_user is the name of the form, double click outside the form to change the name
+    DISPLAY ARRAY ktestarr TO record1.* ATTRIBUTES(UNBUFFERED)
+        --tranfering acctarr dynamic array values to the screen array (populating the form)
+        BEFORE DISPLAY
+
+            MESSAGE ""
+            CALL DIALOG.setArrayAttributes(
+                "record1", ktestatt) --dialog box that appears on screen
+
+        AFTER DISPLAY
+            LET x = DIALOG.getCurrentRow("record1") --just a dialog box
+        ON ACTION refresh ATTRIBUTES(TEXT = "Refresh", ACCELERATOR = "F5")
+            LET cnt = knowledge_testarr_fill(sql_cond)
+    END DISPLAY
+
+    IF int_flag THEN
+        RETURN -1
+    ELSE
+        RETURN ktestarr[x].testid
+    END IF
+
+END FUNCTION
+
+FUNCTION knowledge_test_update()
+
+    DEFINE x INTEGER
+
+    LET int_flag = FALSE
+
+    INPUT ARRAY ktestarr
+        FROM record1.* --get an input array from the screen array
+        ATTRIBUTES(UNBUFFERED, --your form fills and your program vars are filled automatially, auto synch
+            APPEND ROW = FALSE,
+            INSERT ROW = FALSE,
+            DELETE ROW = FALSE,
+            WITHOUT DEFAULTS)
+
+        BEFORE INSERT --make insert button, insert onto bottom
+            LET x = arr_curr() --x is the current array
+
+        BEFORE ROW
+            CALL DIALOG.setFieldActive("testid", FALSE)
+            CALL DIALOG.setFieldActive("userid", FALSE)
+
+        AFTER ROW
+            IF int_flag THEN
+                EXIT INPUT
+            END IF
+            LET x = arr_curr()
+
+            TRY --insert the orders
+                UPDATE knowledgetest
+                    SET knowledgetest.* = ktestarr[x].*
+                    WHERE knowledgetest.testid = ktestarr[x].testid
+                MESSAGE "Record has been updated successfully"
+
+            CATCH
+                ERROR SQLERRMESSAGE
+                NEXT FIELD CURRENT
+            END TRY
+
+    END INPUT
 END FUNCTION
 

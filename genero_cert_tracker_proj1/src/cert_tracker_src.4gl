@@ -5,12 +5,14 @@ IMPORT FGL practical_test_src
 --executable file
 MAIN
 DATABASE certtracker --connect to db
-{
---uncomment commands below to clear and rebuild bd
-CALL db_drop_tables()
-CALL db_create_tables()}
 
+--uncomment commands below to clear and rebuild bd
+{
+CALL db_drop_tables()
+CALL db_create_tables()
+}
 -- open main menu form 
+
 OPEN WINDOW w1 WITH FORM "main_menu_form"
 MENU 
     ON ACTION QUIT
@@ -55,7 +57,7 @@ FUNCTION db_create_tables()
         date_started DATE NOT NULL,
         date_completed DATE,
         comment VARCHAR(300),
-        genero_version VARCHAR(50),
+        genero_version VARCHAR(50) NOT NULL,
         CONSTRAINT PK_PracticalTest_1 PRIMARY KEY(testid),
         CONSTRAINT FK_PracticalTest_User_1 FOREIGN KEY(userid)
             REFERENCES User(userid))"
