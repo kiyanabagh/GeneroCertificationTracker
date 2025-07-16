@@ -12,7 +12,7 @@ The system is designed to assist certification administrators in tracking the pr
 ### 🔧 Tech Stack
 
 * **Frontend & Backend:** Genero BDL (Business Development Language)
-* **Database:** PostgreSQL
+* **Database:** SQL
 
 ### 📌 Project Objectives
 
