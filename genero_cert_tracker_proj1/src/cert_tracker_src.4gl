@@ -2,7 +2,6 @@ IMPORT FGL user_control_src
 IMPORT FGL knowledge_test_src
 IMPORT FGL practical_test_src
 
-
 --executable file
 MAIN
 DATABASE certtracker --connect to db
@@ -40,7 +39,12 @@ MENU
         CALL print_grouped_report()
     ON ACTION print_open_to_work_report
         CALL print_open_to_work_report()
-
+    ON ACTION print_individual_report
+        CALL print_individual_report()
+    ON ACTION print_passed_knowledge_test
+        CALL print_passed_knowledge_test_report()
+    ON ACTION print_fully_certified
+        CALL print_fully_certified_report()
 
 
 
@@ -424,6 +428,106 @@ FUNCTION print_open_to_work_report()
 
     FINISH REPORT open_to_work_report
 END FUNCTION
+
+FUNCTION print_passed_knowledge_test_report()
+    DEFINE rec_passed RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        grade BIGINT
+    END RECORD
+
+    DECLARE cur CURSOR FOR
+        SELECT u.userid, u.fname, u.lname, u.primary_email, k.grade
+          FROM User u, KnowledgeTest k
+         WHERE u.userid = k.userid
+           AND k.grade = 1  -- or your passing value
+         ORDER BY u.lname, u.fname
+
+    START REPORT passed_knowledge_report
+    OPEN cur
+    WHILE TRUE
+        FETCH cur INTO rec_passed.*
+        IF SQLCA.SQLCODE <> 0 THEN
+            EXIT WHILE
+        END IF
+        OUTPUT TO REPORT passed_knowledge_report(rec_passed.*)
+    END WHILE
+    CLOSE cur
+    FINISH REPORT passed_knowledge_report
+END FUNCTION
+
+FUNCTION print_fully_certified_report()
+    DEFINE rec_full RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        k_grade BIGINT,
+        p_grade BOOLEAN
+    END RECORD
+
+    DECLARE cur_full CURSOR FOR
+        SELECT u.userid, u.fname, u.lname, u.primary_email, k.grade, p.grade
+          FROM User u, KnowledgeTest k, PracticalTest p
+         WHERE u.userid = k.userid
+           AND u.userid = p.userid
+           AND k.grade = 1
+           AND p.grade = TRUE
+         ORDER BY u.lname, u.fname
+
+    START REPORT fully_certified_report
+    OPEN cur_full
+    WHILE TRUE
+        FETCH cur_full INTO rec_full.*
+        IF SQLCA.SQLCODE <> 0 THEN
+            EXIT WHILE
+        END IF
+        OUTPUT TO REPORT fully_certified_report(rec_full.*)
+    END WHILE
+    CLOSE cur_full
+    FINISH REPORT fully_certified_report
+END FUNCTION
+
+
+FUNCTION print_individual_report()
+    DEFINE p_userid VARCHAR(30)
+    DEFINE rec_user RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        secondary_email VARCHAR(100),
+        phone_num VARCHAR(11),
+        company VARCHAR(100),
+        contact_date DATE,
+        reason_for_cert BIGINT,
+        seeking_employment BOOLEAN
+    END RECORD
+
+    DISPLAY "Enter the User ID of the person you want to report on:"
+    PROMPT "User ID: " FOR p_userid
+
+    DECLARE user_cur CURSOR FOR
+        SELECT userid, fname, lname, primary_email, secondary_email,
+               phone_num, company, contact_date, reason_for_cert, seeking_employment
+          FROM User
+         WHERE userid = p_userid
+
+    START REPORT individual_report
+    OPEN user_cur
+    WHILE TRUE
+        FETCH user_cur INTO rec_user.*
+        IF SQLCA.SQLCODE <> 0 THEN
+            EXIT WHILE
+        END IF
+        OUTPUT TO REPORT individual_report(rec_user.*)
+    END WHILE
+    CLOSE user_cur
+    FINISH REPORT individual_report
+END FUNCTION
+
 
 REPORT counts_report_company(rec_company)
     DEFINE rec_company RECORD
@@ -831,4 +935,116 @@ REPORT open_to_work_report(rec_otw)
             PRINT "--- End of Open to Work Report ---"
             SKIP 2 LINES
 
+END REPORT
+
+REPORT passed_knowledge_report(rec_passed)
+    DEFINE rec_passed RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        grade BIGINT
+    END RECORD
+
+    FORMAT
+        PAGE HEADER
+            SKIP 2 LINES
+            PRINT "Users Who Passed the Certification Knowledge Test"
+            SKIP 1 LINE
+
+        ON EVERY ROW
+            PRINT rec_passed.fname CLIPPED, " ", rec_passed.lname CLIPPED, " (UserID: ", rec_passed.userid, ")"
+            PRINT "    Email: ", rec_passed.primary_email
+            PRINT "    Knowledge Test Grade: ", rec_passed.grade
+            SKIP 1 LINE
+
+        PAGE TRAILER
+            SKIP 2 LINES
+            PRINT "--- End of Knowledge Test Passing Report ---"
+            SKIP 2 LINES
+END REPORT
+
+REPORT fully_certified_report(rec_full)
+    DEFINE rec_full RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        k_grade BIGINT,
+        p_grade BOOLEAN
+    END RECORD
+
+    DEFINE p_grade_txt CHAR(4)
+
+    FORMAT
+        PAGE HEADER
+            SKIP 2 LINES
+            PRINT "Users Who Are Fully Certified (Passed BOTH Tests)"
+            SKIP 1 LINE
+
+        ON EVERY ROW
+            IF rec_full.p_grade THEN
+                LET p_grade_txt = "Pass"
+            ELSE
+                LET p_grade_txt = "Fail"
+            END IF
+
+            PRINT rec_full.fname CLIPPED, " ", rec_full.lname CLIPPED, " (UserID: ", rec_full.userid, ")"
+            PRINT "    Email: ", rec_full.primary_email
+            PRINT "    Knowledge Test: Pass"
+            PRINT "    Practical Test: ", p_grade_txt
+            SKIP 1 LINE
+
+        PAGE TRAILER
+            SKIP 2 LINES
+            PRINT "--- End of Fully Certified Report ---"
+            SKIP 2 LINES
+END REPORT
+
+REPORT individual_report(rec_user)
+    DEFINE rec_user RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        secondary_email VARCHAR(100),
+        phone_num VARCHAR(11),
+        company VARCHAR(100),
+        contact_date DATE,
+        reason_for_cert BIGINT,
+        seeking_employment BOOLEAN
+    END RECORD
+
+    DEFINE seeking_txt CHAR(3)
+
+    FORMAT
+        PAGE HEADER
+            SKIP 2 LINES
+            PRINT "Individual Report for ", rec_user.fname CLIPPED, " ", rec_user.lname CLIPPED
+            SKIP 1 LINE
+
+        ON EVERY ROW
+            IF rec_user.seeking_employment THEN
+                LET seeking_txt = "Yes"
+            ELSE
+                LET seeking_txt = "No"
+            END IF
+
+            PRINT "--------------------------------------------------------"
+            PRINT "User ID: ", rec_user.userid
+            PRINT "First Name: ", rec_user.fname
+            PRINT "Last Name: ", rec_user.lname
+            PRINT "Primary Email: ", rec_user.primary_email
+            PRINT "Secondary Email: ", rec_user.secondary_email
+            PRINT "Phone: ", rec_user.phone_num
+            PRINT "Company: ", rec_user.company
+            PRINT "Contact Date: ", rec_user.contact_date
+            PRINT "Reason for Cert: ", rec_user.reason_for_cert
+            PRINT "Seeking Employment: ", seeking_txt
+            SKIP 2 LINES
+
+        PAGE TRAILER
+            SKIP 2 LINES
+            PRINT "--- End of Individual Report ---"
+            SKIP 2 LINES
 END REPORT
