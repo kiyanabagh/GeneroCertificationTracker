@@ -18,7 +18,10 @@
       <LStr text="grade"/>
     </Label>
     <FormField name="practicaltest.grade" colName="grade" sqlType="BOOLEAN" fieldId="2" sqlTabName="practicaltest" tabIndex="3">
-      <Edit width="1" scroll="1" posY="2" posX="16" gridWidth="1"/>
+      <ComboBox width="9" scroll="1" posY="2" posX="16" gridWidth="11">
+        <Item name="1" text="Passed"/>
+        <Item name="0" text="Fail"/>
+      </ComboBox>
     </FormField>
     <Label name="practicaltest_status_label1" width="12" text="status" justify="left" posY="2" posX="47" gridWidth="12">
       <LStr text="status"/>
@@ -26,7 +29,8 @@
     <FormField name="practicaltest.status" colName="status" sqlType="BIGINT" required="1" notNull="1" fieldId="3" sqlTabName="practicaltest" tabIndex="4">
       <ComboBox width="18" scroll="1" posY="2" posX="60" gridWidth="20">
         <Item name="1" text="Scenario sent to user / in progress"/>
-        <Item name="3" text="Scenario completed and turned in for grading"/>
+        <Item name="2" text="Scenario completed and turned in for grading"/>
+        <Item name="3" text="grading in progress"/>
         <Item name="4" text="Grading completed - passed"/>
         <Item name="5" text="Grading completed - fail"/>
       </ComboBox>

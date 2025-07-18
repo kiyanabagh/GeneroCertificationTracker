@@ -31,16 +31,19 @@
       <Label gridHeight="1" gridWidth="14" justify="left" name="practicaltest_grade_label1" posX="1" posY="2">
         <Initializer text="dbschema:practicaltest.grade/@label"/>
       </Label>
-      <Edit colName="grade" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="1" name="practicaltest.grade" posX="16" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="Edit">
+      <ComboBox colName="grade" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="11" items="Passed, Fail" name="practicaltest.grade" posX="16" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="ComboBox">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
-      </Edit>
+        <Item lstrtext="false" name="1" text="Passed"/>
+        <Item lstrtext="false" name="0" text="Fail"/>
+      </ComboBox>
       <Label gridHeight="1" gridWidth="12" justify="left" name="practicaltest_status_label1" posX="47" posY="2">
         <Initializer text="dbschema:practicaltest.status/@label"/>
       </Label>
-      <ComboBox colName="status" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" items="Scenario sent to user / in progress, Scenario completed and turned in for grading, Grading completed - passed, Grading completed - fail" name="practicaltest.status" posX="60" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="ComboBox">
+      <ComboBox colName="status" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" items="Scenario sent to user / in progress, Scenario completed and turned in for grading, grading in progress, Grading completed - passed, Grading completed - fail" name="practicaltest.status" posX="60" posY="2" scroll="true" sqlTabName="practicaltest" tabIndex="-1" widget="ComboBox">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
         <Item lstrtext="false" name="1" text="Scenario sent to user / in progress"/>
-        <Item lstrtext="false" name="3" text="Scenario completed and turned in for grading"/>
+        <Item lstrtext="false" name="2" text="Scenario completed and turned in for grading"/>
+        <Item lstrtext="false" name="3" text="grading in progress"/>
         <Item lstrtext="false" name="4" text="Grading completed - passed"/>
         <Item lstrtext="false" name="5" text="Grading completed - fail"/>
       </ComboBox>

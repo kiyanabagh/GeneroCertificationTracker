@@ -1,21 +1,42 @@
 <?xml version='1.0' encoding='windows-1252'?>
-<Form name="main_menu_form.tmp" build="5.01.02" text="Form" width="37" height="7">
+<Form name="main_menu_form.tmp" build="5.01.02" text="Form" width="58" height="10">
   <LStr text="Form"/>
-  <Grid name="grid1" width="37" height="7">
-    <Button name="input_user" width="12" text="Input User" posY="0" posX="22" gridWidth="12" tabIndex="1">
+  <Grid name="grid1" width="58" height="10">
+    <Button name="input_user" width="12" text="Input User" posY="0" posX="7" gridWidth="12" tabIndex="1">
       <LStr text="Input User"/>
     </Button>
-    <Button name="edit_knowledge_test" width="16" text="Input Knowledge Test Info" posY="1" posX="20" gridWidth="16" tabIndex="2">
+    <Button name="print_counts_report" width="12" text="View Counts Report" posY="0" posX="45" gridWidth="12" tabIndex="2">
+      <LStr text="View Counts Report"/>
+    </Button>
+    <Button name="edit_knowledge_test" width="16" text="Input Knowledge Test Info" posY="1" posX="6" gridWidth="16" tabIndex="3">
       <LStr text="Input Knowledge Test Info"/>
     </Button>
-    <Button name="edit_practical_test" width="16" text="Input Practical Test Info" posY="2" posX="20" gridWidth="16" tabIndex="3">
+    <Button name="print_ranking_report" width="12" text="View Ranking Report" posY="1" posX="45" gridWidth="12" tabIndex="4">
+      <LStr text="View Ranking Report"/>
+    </Button>
+    <Button name="edit_practical_test" width="16" text="Input Practical Test Info" posY="2" posX="6" gridWidth="16" tabIndex="5">
       <LStr text="Input Practical Test Info"/>
     </Button>
-    <Button name="query_tests" width="12" text="Query Tests" posY="4" posX="22" gridWidth="12" tabIndex="4">
-      <LStr text="Query Tests"/>
+    <Button name="print_in_progress_report" width="14" text="View In-Progress Report" posY="2" posX="43" gridWidth="14" tabIndex="6">
+      <LStr text="View In-Progress Report"/>
     </Button>
-    <Button name="certification_info" width="12" text="Certification Info" posY="5" posX="22" gridWidth="12" tabIndex="5">
-      <LStr text="Certification Info"/>
+    <Button name="print_general_report" width="12" text="View General Report" posY="3" posX="45" gridWidth="12" tabIndex="7">
+      <LStr text="View General Report"/>
+    </Button>
+    <Button name="print_grouped_report" width="12" text="View Grouped Report" posY="4" posX="45" gridWidth="12" tabIndex="8">
+      <LStr text="View Grouped Report"/>
+    </Button>
+    <Button name="print_open_to_work_report" width="14" text="Vew Open-To-Work Report" posY="5" posX="43" gridWidth="14" tabIndex="9">
+      <LStr text="Vew Open-To-Work Report"/>
+    </Button>
+    <Button name="print_individual_report" width="14" text="View Individual Report" posY="6" posX="43" gridWidth="14" tabIndex="10">
+      <LStr text="View Individual Report"/>
+    </Button>
+    <Button name="print_fully_certified" width="14" text="View Fully Certified Report" posY="7" posX="43" gridWidth="14" tabIndex="11">
+      <LStr text="View Fully Certified Report"/>
+    </Button>
+    <Button name="print_passed_knowledge_test" width="18" text="View Passed Knowledge Test Report" posY="8" posX="39" gridWidth="18" tabIndex="12">
+      <LStr text="View Passed Knowledge Test Report"/>
     </Button>
   </Grid>
 </Form>

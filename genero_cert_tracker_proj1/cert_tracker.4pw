@@ -73,6 +73,7 @@
   <Group id="75644415" label="Group" language="Genero">
     <Application binaryName="Application" dependencies="14000,1986" environment="dirlist:FGLDBPATH=$(ProjectDir)/db,filelist:FGLPROFILE=$(ProjectDir)/fglprofile,dirlist:DBPATH=$(ProjectDir)/db" id="18736" label="Application">
       <VirtualFolder label="forms">
+        <File filePath="form/certification_info_form.4fd"/>
         <File filePath="src/knowledge_test_form.4fd"/>
         <File filePath="form/main_menu_form.4fd"/>
         <File filePath="src/practical_test_form.4fd"/>
@@ -80,6 +81,7 @@
       </VirtualFolder>
       <Configuration environment="filelist:FGLPROFILE=$(ProjectDir)/fglprofile,dirlist:DBPATH=$(ProjectDir)/db" id="-1429969501" label="Application"/>
       <File filePath="src/cert_tracker_src.4gl"/>
+      <File filePath="src/certification_info_src.4gl"/>
       <File filePath="fglprofile"/>
       <File filePath="src/knowledge_test_src.4gl"/>
       <File filePath="src/practical_test_src.4gl"/>

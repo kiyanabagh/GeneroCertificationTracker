@@ -68,9 +68,11 @@
       <Label gridHeight="1" gridWidth="15" justify="left" name="user_reason_for_cert_label1" posX="1" posY="5">
         <Initializer text="dbschema:user.reason_for_cert/@label"/>
       </Label>
-      <Edit colName="reason_for_cert" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="user.reason_for_cert" posX="17" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+      <ComboBox colName="reason_for_cert" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" items="Required by job, Build personal skills" name="user.reason_for_cert" posX="17" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="ComboBox">
         <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
-      </Edit>
+        <Item lstrtext="false" name="1" text="Required by job"/>
+        <Item lstrtext="false" name="2" text="Build personal skills"/>
+      </ComboBox>
       <Label gridHeight="1" gridWidth="18" justify="left" name="user_seeking_employment_label1" posX="48" posY="5">
         <Initializer text="dbschema:user.seeking_employment/@label"/>
       </Label>

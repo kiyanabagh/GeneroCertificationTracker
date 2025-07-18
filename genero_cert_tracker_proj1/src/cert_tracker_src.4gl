@@ -1,6 +1,8 @@
+
 IMPORT FGL user_control_src
 IMPORT FGL knowledge_test_src
 IMPORT FGL practical_test_src
+IMPORT FGL certification_info_src
 
 --executable file
 MAIN
@@ -23,10 +25,6 @@ MENU
         CALL knowledge_test_driver()
     ON ACTION edit_practical_test
         CALL practical_test_driver()
-    ON ACTION query_tests
-        DISPLAY "query tests"
-    ON ACTION certification_info
-        DISPLAY "certification info"
     ON ACTION print_counts_report
         CALL print_counts_report()
     ON ACTION print_ranking_report
@@ -51,6 +49,7 @@ MENU
 
 END MENU
 CLOSE WINDOW w1
+
 END MAIN
 
 
@@ -142,8 +141,8 @@ FUNCTION print_counts_report()
     DECLARE c_company CURSOR FOR
         SELECT 
             u.company,
-            SUM(CASE WHEN kt.grade = 1 THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade = 0 THEN 1 ELSE 0 END) AS fail_knowledge,
+            SUM(CASE WHEN kt.grade >= 75 THEN 1 ELSE 0 END) AS pass_knowledge,
+            SUM(CASE WHEN kt.grade <= 75 THEN 1 ELSE 0 END) AS fail_knowledge,
             SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
             SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
         FROM User u
@@ -162,8 +161,8 @@ FUNCTION print_counts_report()
     DECLARE c_seeking CURSOR FOR
         SELECT 
             u.seeking_employment,
-            SUM(CASE WHEN kt.grade = 1 THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade = 0 THEN 1 ELSE 0 END) AS fail_knowledge,
+            SUM(CASE WHEN kt.grade >= 75  THEN 1 ELSE 0 END) AS pass_knowledge,
+            SUM(CASE WHEN kt.grade <=75   THEN 1 ELSE 0 END) AS fail_knowledge,
             SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
             SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
         FROM User u
@@ -182,8 +181,8 @@ FUNCTION print_counts_report()
     DECLARE c_reason CURSOR FOR
         SELECT 
             u.reason_for_cert,
-            SUM(CASE WHEN kt.grade = 1 THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade = 0 THEN 1 ELSE 0 END) AS fail_knowledge,
+            SUM(CASE WHEN kt.grade >= 75 THEN 1 ELSE 0 END) AS pass_knowledge,
+            SUM(CASE WHEN kt.grade <= 75 THEN 1 ELSE 0 END) AS fail_knowledge,
             SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
             SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
         FROM User u
@@ -442,7 +441,7 @@ FUNCTION print_passed_knowledge_test_report()
         SELECT u.userid, u.fname, u.lname, u.primary_email, k.grade
           FROM User u, KnowledgeTest k
          WHERE u.userid = k.userid
-           AND k.grade = 1  -- or your passing value
+           AND k.grade >= 75  -- or your passing value
          ORDER BY u.lname, u.fname
 
     START REPORT passed_knowledge_report
@@ -473,7 +472,7 @@ FUNCTION print_fully_certified_report()
           FROM User u, KnowledgeTest k, PracticalTest p
          WHERE u.userid = k.userid
            AND u.userid = p.userid
-           AND k.grade = 1
+           AND k.grade >= 75
            AND p.grade = TRUE
          ORDER BY u.lname, u.fname
 
@@ -543,15 +542,19 @@ REPORT counts_report_company(rec_company)
             SKIP 2 LINES
             PRINT "Counts Report by Company"
             SKIP 1 LINE
-            PRINT "Company        Pass_Knowledge  Fail_Knowledge  Pass_Practical  Fail_Practical"
+            PRINT COLUMN 2, "Company name",
+                  COLUMN 19, "Passed knowledge",
+                  COLUMN 39, "Failed knowledge", 
+                  COLUMN 59," Pass practical",
+                  COLUMN 79, "Fail Practical"
             SKIP 2 LINES
 
         ON EVERY ROW
-            PRINT rec_company.company CLIPPED, "        ",
-                  rec_company.pass_knowledge USING "###", "        ",
-                  rec_company.fail_knowledge USING "###", "        ",
-                  rec_company.pass_practical USING "###", "        ",
-                  rec_company.fail_practical USING "###"
+            PRINT COLUMN 2, rec_company.company CLIPPED,
+                  COLUMN 19, rec_company.pass_knowledge USING "###",
+                  COLUMN 39, rec_company.fail_knowledge USING "###", 
+                  COLUMN 59, rec_company.pass_practical USING "###",
+                  COLUMN 57, rec_company.fail_practical USING "###"
             SKIP 1 LINE
 
         PAGE TRAILER
@@ -577,7 +580,12 @@ REPORT counts_report_seeking(rec_seeking)
             SKIP 2 LINES
             PRINT "Counts Report by Seeking Employment (Open to Work)"
             SKIP 1 LINE
-            PRINT "OpenToWork     Pass_Knowledge  Fail_Knowledge  Pass_Practical  Fail_Practical"
+
+            PRINT COLUMN 2, "Open To Work",
+                  COLUMN 19, "Passed knowledge",
+                  COLUMN 39, "Failed knowledge", 
+                  COLUMN 59," Pass practical",
+                  COLUMN 79, "Fail Practical"
             SKIP 2 LINES
 
         ON EVERY ROW
@@ -587,11 +595,11 @@ REPORT counts_report_seeking(rec_seeking)
                 LET open_to_work = "No"
             END IF
 
-            PRINT open_to_work, "        ",
-                  rec_seeking.pass_knowledge USING "###", "        ",
-                  rec_seeking.fail_knowledge USING "###", "        ",
-                  rec_seeking.pass_practical USING "###", "        ",
-                  rec_seeking.fail_practical USING "###"
+            PRINT COLUMN 2, open_to_work, 
+                  COLUMN 19, rec_seeking.pass_knowledge USING "###", 
+                  COLUMN 39, rec_seeking.fail_knowledge USING "###", 
+                  COLUMN 59, rec_seeking.pass_practical USING "###",
+                  COLUMN 79, rec_seeking.fail_practical USING "###"
             SKIP 1 LINE
 
         PAGE TRAILER
@@ -615,15 +623,19 @@ REPORT counts_report_reason(rec_reason)
             SKIP 2 LINES
             PRINT "Counts Report by Reason for Certification"
             SKIP 1 LINE
-            PRINT "Reason        Pass_Knowledge  Fail_Knowledge  Pass_Practical  Fail_Practical"
+            PRINT COLUMN 2, "Reason for Certification",
+                  COLUMN 30, "Passed knowledge",
+                  COLUMN 50, "Failed knowledge", 
+                  COLUMN 70," Pass practical",
+                  COLUMN 90, "Fail Practical"
             SKIP 2 LINES
 
         ON EVERY ROW
-            PRINT rec_reason.reason_for_cert USING "#####", "        ",
-                  rec_reason.pass_knowledge USING "###", "        ",
-                  rec_reason.fail_knowledge USING "###", "        ",
-                  rec_reason.pass_practical USING "###", "        ",
-                  rec_reason.fail_practical USING "###"
+            PRINT COLUMN 2, rec_reason.reason_for_cert USING "#####",
+                 COLUMN 30, rec_reason.pass_knowledge USING "###",
+                  COLUMN 50, rec_reason.fail_knowledge USING "###", 
+                  COLUMN 70, rec_reason.pass_practical USING "###", 
+                  COLUMN 90, rec_reason.fail_practical USING "###"
             SKIP 1 LINE
 
         PAGE TRAILER
@@ -651,7 +663,12 @@ REPORT ranking_report(rec_rank)
             SKIP 2 LINES
             PRINT "Ranking Report"
             SKIP 1 LINE
-            PRINT "Rank  Score  Name                      Email                         Company             OpenToWork"
+            PRINT COLUMN 2, "Rank",
+                  COLUMN 15, "Score ",
+                  COLUMN 23, "Name ",
+                  COLUMN 40, "Primary Email",
+                  COLUMN 58, "Company ",
+                  COLUMN 75, "Open to work"
             SKIP 2 LINES
 
         ON EVERY ROW
@@ -661,12 +678,12 @@ REPORT ranking_report(rec_rank)
                 LET open_to_work = "No"
             END IF
 
-            PRINT rec_rank.rank USING "###", "   ",
-                  rec_rank.score USING "###", "   ",
-                  rec_rank.lname CLIPPED, ", ", rec_rank.fname CLIPPED, "   ",
-                  rec_rank.primary_email CLIPPED, "   ",
-                  rec_rank.company CLIPPED, "   ",
-                  open_to_work
+            PRINT COLUMN 2, rec_rank.rank USING "###", 
+                  COLUMN 15, rec_rank.score USING "###", 
+                  COLUMN 23, rec_rank.lname CLIPPED, ", ", rec_rank.fname CLIPPED,
+                  COLUMN 40, rec_rank.primary_email CLIPPED,
+                  COLUMN 58, rec_rank.company CLIPPED,
+                  COLUMN 75, open_to_work
             SKIP 1 LINE
 
         PAGE TRAILER
@@ -694,32 +711,47 @@ REPORT in_progress_report(rec_progress)
     FORMAT
         PAGE HEADER
             SKIP 2 LINES
+            PRINT COLUMN 2," Status",
+                  COLUMN 25, "Name",
+                  COLUMN 35, "Email",
+                  COLUMN 45, "Company",
+                  COLUMN 58, "Testid",
+                  COLUMN 68, "Scenario",
+                  COLUMN 78, "Start Date",
+                 COLUMN 88,"End date"
+            {
             PRINT "In Progress Practical Tests Report"
             SKIP 1 LINE
-            PRINT "Status        Name                  Email                  Company         TestID   Scenario   Start Date   End Date"
-            SKIP 2 LINES
+            PRINT "Status                   Name                           Email                     Company         TestID   Scenario   Start Date   End Date"
+           } SKIP 2 LINES
+
+            
 
         ON EVERY ROW
             -- Translate status code to text
             CASE
-                WHEN rec_progress.status = 0
-                    LET status_desc = "Not Started"
                 WHEN rec_progress.status = 1
-                    LET status_desc = "In Progress"
+                    LET status_desc = "Scenario sent"
                 WHEN rec_progress.status = 2
-                    LET status_desc = "Completed"
+                    LET status_desc = "Submitted for grading"
+                WHEN rec_progress.status = 3
+                    LET status_desc = "Grading in progress"
+                WHEN rec_progress.status = 4
+                    LET status_desc = "Grading complete - passed"
+                WHEN rec_progress.status = 5
+                    LET status_desc = "Grading complete - fail"
                 OTHERWISE
                     LET status_desc = "Unknown"
             END CASE
 
-            PRINT status_desc, "   ",
-                  rec_progress.lname CLIPPED, ", ", rec_progress.fname CLIPPED, "   ",
-                  rec_progress.primary_email CLIPPED, "   ",
-                  rec_progress.company CLIPPED, "   ",
-                  rec_progress.testid CLIPPED, "   ",
-                  rec_progress.scenario USING "###", "   ",
-                  rec_progress.date_started, "   ",
-                  rec_progress.date_completed
+            PRINT COLUMN 2, status_desc,
+                  COLUMN 25, rec_progress.lname CLIPPED, ", ", rec_progress.fname CLIPPED, 
+                  COLUMN 35, rec_progress.primary_email CLIPPED, 
+                  COLUMN 45, rec_progress.company CLIPPED,
+                  COLUMN 58, rec_progress.testid CLIPPED,
+                  COLUMN 68, rec_progress.scenario USING "###", 
+                  COLUMN 78, rec_progress.date_started, 
+                 COLUMN 88, rec_progress.date_completed
             SKIP 1 LINE
 
         PAGE TRAILER
@@ -1048,3 +1080,6 @@ REPORT individual_report(rec_user)
             PRINT "--- End of Individual Report ---"
             SKIP 2 LINES
 END REPORT
+
+
+

@@ -54,7 +54,10 @@
       <LStr text="reason_for_cert"/>
     </Label>
     <FormField name="user.reason_for_cert" colName="reason_for_cert" sqlType="BIGINT" fieldId="8" sqlTabName="user" tabIndex="9">
-      <Edit width="20" scroll="1" posY="5" posX="17" gridWidth="20"/>
+      <ComboBox width="18" scroll="1" posY="5" posX="17" gridWidth="20">
+        <Item name="1" text="Required by job"/>
+        <Item name="2" text="Build personal skills"/>
+      </ComboBox>
     </FormField>
     <Label name="user_seeking_employment_label1" width="18" text="seeking_employment" justify="left" posY="5" posX="48" gridWidth="18">
       <LStr text="seeking_employment"/>
