@@ -1,4 +1,3 @@
-
 IMPORT FGL user_control_src
 IMPORT FGL knowledge_test_src
 IMPORT FGL practical_test_src
@@ -395,8 +394,8 @@ FUNCTION print_grouped_report()
 END FUNCTION
 
 FUNCTION print_open_to_work_report()
+    DEFINE s STRING
     DEFINE rec_otw RECORD
-        seeking CHAR(3),
         fname VARCHAR(50),
         lname VARCHAR(50),
         primary_email VARCHAR(100),
@@ -404,17 +403,10 @@ FUNCTION print_open_to_work_report()
         contact_date DATE
     END RECORD
 
+    LET s = "SELECT fname, lname, primary_email, company, contact_date FROM User WHERE seeking_employment = 1 ORDER BY lname, fname"
+
     START REPORT open_to_work_report
-
-    -- Prepare the data grouped by seeking_employment (Yes/No)
-    PREPARE s FROM
-        "SELECT CASE WHEN seeking_employment THEN 'Yes' ELSE 'No' END AS seeking, " ||
-        "fname, lname, primary_email, company, contact_date " ||
-        "FROM User " ||
-        "ORDER BY seeking DESC, lname, fname"
-
     DECLARE otw_cur CURSOR FOR s
-
     OPEN otw_cur
     WHILE TRUE
         FETCH otw_cur INTO rec_otw.*
@@ -424,9 +416,10 @@ FUNCTION print_open_to_work_report()
         OUTPUT TO REPORT open_to_work_report(rec_otw.*)
     END WHILE
     CLOSE otw_cur
-
     FINISH REPORT open_to_work_report
 END FUNCTION
+
+
 
 FUNCTION print_passed_knowledge_test_report()
     DEFINE rec_passed RECORD
@@ -924,50 +917,29 @@ REPORT grouped_report(rec_group)
 
 END REPORT
 
-REPORT open_to_work_report(rec_otw)
-    DEFINE rec_otw RECORD
-        seeking CHAR(3),
-        fname VARCHAR(50),
-        lname VARCHAR(50),
-        primary_email VARCHAR(100),
-        company VARCHAR(100),
-        contact_date DATE
-    END RECORD
-
-    DEFINE last_seeking CHAR(3)
+REPORT open_to_work_report(
+    fname, lname, primary_email, company, contact_date)
+    DEFINE fname VARCHAR(50)
+    DEFINE lname VARCHAR(50)
+    DEFINE primary_email VARCHAR(100)
+    DEFINE company VARCHAR(100)
+    DEFINE contact_date DATE
 
     FORMAT
         PAGE HEADER
-            SKIP 2 LINES
+            SKIP 1 LINE
             PRINT "Open to Work Report"
             SKIP 1 LINE
-
-        ON EVERY ROW
-            IF last_seeking IS NULL OR rec_otw.seeking <> last_seeking THEN
-                PRINT "====================================================="
-                PRINT "Seeking Employment: ", rec_otw.seeking
-                PRINT "-----------------------------------------------------"
-                PRINT "Name                Email                   Company         Contact Date"
-                PRINT "-----------------------------------------------------"
-                LET last_seeking = rec_otw.seeking
-            END IF
-
-            PRINT rec_otw.lname CLIPPED, ", ", rec_otw.fname CLIPPED,
-                  "      ",
-                  rec_otw.primary_email CLIPPED,
-                  "      ",
-                  rec_otw.company CLIPPED,
-                  "      ",
-                  rec_otw.contact_date
-
+            PRINT "Name", "Email", "Company", "Contact Date"
+            PRINT "---------------------------------------------------------"
             SKIP 1 LINE
-
+        ON EVERY ROW
+            PRINT fname CLIPPED, "  ", lname CLIPPED, "  ", primary_email CLIPPED, "  ", company CLIPPED, "  ", contact_date
         PAGE TRAILER
             SKIP 2 LINES
-            PRINT "--- End of Open to Work Report ---"
-            SKIP 2 LINES
-
+            PRINT "--- End of Report ---"
 END REPORT
+
 
 REPORT passed_knowledge_report(rec_passed)
     DEFINE rec_passed RECORD
@@ -1080,6 +1052,3 @@ REPORT individual_report(rec_user)
             PRINT "--- End of Individual Report ---"
             SKIP 2 LINES
 END REPORT
-
-
-
