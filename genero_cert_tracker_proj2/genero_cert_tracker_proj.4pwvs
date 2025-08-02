@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WorkspaceViewState version="1.0">
+  <ExpandedNodes>
+    <Node path=""/>
+    <Node path="/Group[group]"/>
+    <Node path="/Group[group]/Application[application]"/>
+    <Node path="/Group[group]/Application[application]/knowledge_test_files[virtual-folder]"/>
+    <Node path="/Group[group]/Application[application]/practical_test_files[virtual-folder]"/>
+    <Node path="/Group[group]/Application[application]/user_info_files[virtual-folder]"/>
+    <Node path="/Group[group]/Databases[library]"/>
+  </ExpandedNodes>
+  <OpenDocuments>
+    <Document container="true" filePath="src/cert_tracker_src.4gl" locator="23:42" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/knowledge_test_main.4gl" locator="1:1:124:0" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/knowledge_test_query.4gl" locator="1:1:167:12" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/user_main.4gl" locator="10:1" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/knowledge_test_data.4gl" locator="1:1:145:0" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/user_data.4gl" locator="1:1" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/user_query_test.4gl" locator="1:1" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/practical_test_data.4gl" locator="104:42" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/practical_test_query.4gl" locator="167:13" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="src/practical_test_main.4gl" locator="124:1" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+  </OpenDocuments>
+  <CurrentDocument filePath="src/practical_test_data.4gl" module="mod-ce3"/>
+</WorkspaceViewState>

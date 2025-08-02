@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Schema gstVersion="50102" id="{c6f6f0a5-8d6f-442b-8a8d-82e89f8972f2}" version="5.0">
+  <AGSettings version="1.1">
+    <DynamicProperties version="4">
+      <DynamicProperty description="Associated label when generating form" initialValue="" isDefaultInherited="false" isHidden="false" label="Label" name="label" readOnly="false" type="TEXT"/>
+      <DynamicProperty description="Associated widget" editorInfo="contains:ButtonEdit|CheckBox|ComboBox|DateEdit|DateTimeEdit|Edit|FFImage|FFLabel|Field|Phantom|ProgressBar|RadioGroup|Slider|SpinEdit|TextEdit|TimeEdit" initialValue="Edit" isDefaultInherited="false" isHidden="false" label="Widget" name="widget" readOnly="false" type="ENUM"/>
+      <DynamicPropertyGroup collapsed="false" description="Formfield properties" label="Formfield" name="formfieldGroup" properties="label;widget"/>
+    </DynamicProperties>
+    <NodeInfos version="1">
+      <NodeInfo mimeType="db/column" properties="widget;label"/>
+    </NodeInfos>
+  </AGSettings>
+  <ExtractionSettings last="SQLite">
+    <ExtractionOptions casens="LowerCase" cvmeth="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" ignerr="true" systab="false" type="SQLite"/>
+  </ExtractionSettings>
+  <Table active="true" name="certification" status="U" uuid="db/table35">
+    <Column fglLength="30" fglType="201" name="userid" notNull="true" order="1" status="U" uuid="db/column266"/>
+    <Column fglLength="30" fglType="201" name="certid" notNull="true" order="2" status="U" uuid="db/column268"/>
+    <Column fglLength="4" fglType="7" name="date" notNull="true" order="3" status="U" uuid="db/column270"/>
+    <Index indexColumns="certid" indexConstraint="primaryKey" name="sqlite_autoindex_certification_1" status="U" uuid="db/index36"/>
+  </Table>
+  <Table active="true" name="knowledgetest" status="U" uuid="db/table37">
+    <Column fglLength="8" fglType="52" name="userid" notNull="true" order="1" status="U" uuid="db/column272"/>
+    <Column fglLength="8" fglType="52" name="testid" notNull="true" order="2" status="U" uuid="db/column274"/>
+    <Column fglLength="8" fglType="52" name="grade" notNull="false" order="3" status="U" uuid="db/column276"/>
+    <Column fglLength="4" fglType="7" name="date_completed" notNull="false" order="4" status="U" uuid="db/column278"/>
+    <Column fglLength="50" fglType="201" name="genero_version" notNull="false" order="5" status="U" uuid="db/column280"/>
+    <Index indexColumns="testid" indexConstraint="primaryKey" name="sqlite_autoindex_knowledgetest_1" status="U" uuid="db/index38"/>
+  </Table>
+  <Table active="true" name="practicaltest" status="U" uuid="db/table39">
+    <Column fglLength="8" fglType="52" name="userid" notNull="true" order="1" status="U" uuid="db/column282"/>
+    <Column fglLength="8" fglType="52" name="testid" notNull="true" order="2" status="U" uuid="db/column284"/>
+    <Column fglLength="1" fglType="45" name="grade" notNull="false" order="3" status="U" uuid="db/column286"/>
+    <Column fglLength="8" fglType="52" name="status" notNull="true" order="4" status="U" uuid="db/column288"/>
+    <Column fglLength="8" fglType="52" name="scenario" notNull="true" order="5" status="U" uuid="db/column290"/>
+    <Column fglLength="4" fglType="7" name="date_started" notNull="true" order="6" status="U" uuid="db/column292"/>
+    <Column fglLength="4" fglType="7" name="date_completed" notNull="false" order="7" status="U" uuid="db/column294"/>
+    <Column fglLength="300" fglType="201" name="comment" notNull="false" order="8" status="U" uuid="db/column296"/>
+    <Column fglLength="50" fglType="201" name="genero_version" notNull="true" order="9" status="U" uuid="db/column298"/>
+    <Index indexColumns="testid" indexConstraint="primaryKey" name="sqlite_autoindex_practicaltest_1" status="U" uuid="db/index40"/>
+  </Table>
+  <Table active="true" name="user" status="U" uuid="db/table41">
+    <Column fglLength="8" fglType="52" name="userid" notNull="true" order="1" status="U" uuid="db/column300"/>
+    <Column fglLength="50" fglType="201" name="fname" notNull="false" order="2" status="U" uuid="db/column302"/>
+    <Column fglLength="50" fglType="201" name="lname" notNull="false" order="3" status="U" uuid="db/column304"/>
+    <Column fglLength="100" fglType="201" name="primary_email" notNull="true" order="4" status="U" uuid="db/column306"/>
+    <Column fglLength="100" fglType="201" name="secondary_email" notNull="false" order="5" status="U" uuid="db/column308"/>
+    <Column fglLength="11" fglType="201" name="phone_num" notNull="false" order="6" status="U" uuid="db/column310"/>
+    <Column fglLength="100" fglType="201" name="company" notNull="false" order="7" status="U" uuid="db/column312"/>
+    <Column fglLength="4" fglType="7" name="contact_date" notNull="true" order="8" status="U" uuid="db/column314"/>
+    <Column fglLength="8" fglType="52" name="reason_for_cert" notNull="false" order="9" status="U" uuid="db/column316"/>
+    <Column fglLength="1" fglType="45" name="seeking_employment" notNull="false" order="10" status="U" uuid="db/column318"/>
+    <Column fglLength="1" fglType="45" name="fully_certified" notNull="false" order="11" status="U" uuid="db/column320"/>
+    <Column fglLength="1" fglType="45" name="payment_recieved" notNull="false" order="12" status="U" uuid="db/column322"/>
+    <Column fglLength="100" fglType="201" name="test_url" notNull="false" order="13" status="U" uuid="db/column324"/>
+    <Column fglLength="4" fglType="7" name="lockout_date" notNull="false" order="14" status="U" uuid="db/column326"/>
+    <Index indexColumns="userid" indexConstraint="primaryKey" name="sqlite_autoindex_user_1" status="U" uuid="db/index42"/>
+  </Table>
+  <ForeignKey cascadeDelete="false" fkColumns="userid" fkRefColumns="userid" name="fk_certification_user_0" refTable="user" status="U" table="certification" uuid="db/foreignkey26"/>
+  <ForeignKey cascadeDelete="false" fkColumns="userid" fkRefColumns="userid" name="fk_knowledgetest_user_0" refTable="user" status="U" table="knowledgetest" uuid="db/foreignkey28"/>
+  <ForeignKey cascadeDelete="false" fkColumns="userid" fkRefColumns="userid" name="fk_practicaltest_user_0" refTable="user" status="U" table="practicaltest" uuid="db/foreignkey30"/>
+  <Views ActiveView="View-1" showLabels="true">
+    <View Name="View-1">
+      <Layout>
+        <![CDATA[AAAAAgAAABQAZABiAC8AdABhAGIAbABlADQAMUBzfFrgAAAAQDO7SAAAAAAAAAAAAAAAAAEAAAAUAGQAYgAvAHQAYQBiAGwAZQAzADdAM7JmAAAAAEBvhDXAAAAAAAAAAAAAAAABAAAAFABkAGIALwB0AGEAYgBsAGUAMwA5QHwdKQAAAABAfSi4AAAAAAAAAAAAAAAAAQAAABQAZABiAC8AdABhAGIAbABlADMANUCEB97gAAAAQFNraAAAAAAAAAAAAAAAAAE=]]>
+      </Layout>
+    </View>
+  </Views>
+</Schema>

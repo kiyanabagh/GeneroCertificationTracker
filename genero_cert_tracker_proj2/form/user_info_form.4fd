@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ManagedForm databaseName="cert_trackerdb_2" fileVersion="40100" gstVersion="50102" name="managedform" uid="{ab7c21cc-3359-4780-ad47-c84ccacc8ea0}">
+  <AGSettings>
+    <DynamicProperties version="4"/>
+  </AGSettings>
+  <Record masterTable="user" name="record1" uid="{935ae218-65c8-4bd1-8e1b-fb54ff3c2769}">
+    <RecordField colName="userid" fieldIdRef="1" fieldType="TABLE_COLUMN" name="user.userid" sqlTabName="user" uid="{f71001bb-80f2-4fce-b025-a9c410da0e37}"/>
+    <RecordField colName="fname" fieldIdRef="2" fieldType="TABLE_COLUMN" name="user.fname" sqlTabName="user" uid="{2b9b9f7b-0110-4872-b8b4-8605d5c6336d}"/>
+    <RecordField colName="lname" fieldIdRef="3" fieldType="TABLE_COLUMN" name="user.lname" sqlTabName="user" uid="{2fd6009e-295d-4ff2-be49-bab9091d4b08}"/>
+    <RecordField colName="primary_email" fieldIdRef="4" fieldType="TABLE_COLUMN" name="user.primary_email" sqlTabName="user" uid="{1b6e5371-cd33-4b63-9a40-716325cc447f}"/>
+    <RecordField colName="secondary_email" fieldIdRef="5" fieldType="TABLE_COLUMN" name="user.secondary_email" sqlTabName="user" uid="{d378fcad-dd68-4c4e-b0f8-9c13a7f78de1}"/>
+    <RecordField colName="phone_num" fieldIdRef="6" fieldType="TABLE_COLUMN" name="user.phone_num" sqlTabName="user" uid="{28b7bf56-d4f1-4dbc-b433-3495977aa779}"/>
+    <RecordField colName="company" fieldIdRef="7" fieldType="TABLE_COLUMN" name="user.company" sqlTabName="user" uid="{57eb5b36-d3e3-4019-807d-ba2604df5c0e}"/>
+    <RecordField colName="contact_date" fieldIdRef="8" fieldType="TABLE_COLUMN" name="user.contact_date" sqlTabName="user" uid="{edf2ac82-1b5e-4f74-91e4-000857e440e0}"/>
+    <RecordField colName="reason_for_cert" fieldIdRef="9" fieldType="TABLE_COLUMN" name="user.reason_for_cert" sqlTabName="user" uid="{d8ce5d98-434c-4bc5-a283-97e533b9da8b}"/>
+    <RecordField colName="seeking_employment" fieldIdRef="10" fieldType="TABLE_COLUMN" name="user.seeking_employment" sqlTabName="user" uid="{91c5614c-1c76-4a22-9bc4-b084af509dd9}"/>
+    <RecordField colName="fully_certified" fieldIdRef="11" fieldType="TABLE_COLUMN" name="user.fully_certified" sqlTabName="user" uid="{22283762-9849-41c0-87c6-ee5b3c415dcf}"/>
+    <RecordField colName="payment_recieved" fieldIdRef="12" fieldType="TABLE_COLUMN" name="user.payment_recieved" sqlTabName="user" uid="{26dd73cd-ecc1-455b-a5a9-398b623508ad}"/>
+    <RecordField colName="test_url" fieldIdRef="13" fieldType="TABLE_COLUMN" name="user.test_url" sqlTabName="user" uid="{b7b20ff2-fb36-483e-a48f-cec2c320e2a9}"/>
+    <RecordField colName="lockout_date" fieldIdRef="14" fieldType="TABLE_COLUMN" name="user.lockout_date" sqlTabName="user" uid="{d5b7da87-ed95-41de-8c22-9786db322dba}"/>
+  </Record>
+  <Form gridHeight="11" gridWidth="100" name="form" text="Form">
+    <Grid gridHeight="9" gridWidth="98" name="cert_trackerdb_21" posX="1" posY="1">
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_userid_label1" posX="1" posY="1">
+        <Initializer text="dbschema:user.userid/@label"/>
+      </Label>
+      <Edit colName="userid" fieldId="1" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="user.userid" posX="17" posY="1" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_fname_label1" posX="48" posY="1">
+        <Initializer text="dbschema:user.fname/@label"/>
+      </Label>
+      <Edit colName="fname" fieldId="2" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.fname" posX="67" posY="1" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_lname_label1" posX="1" posY="2">
+        <Initializer text="dbschema:user.lname/@label"/>
+      </Label>
+      <Edit colName="lname" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.lname" posX="17" posY="2" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_primary_email_label1" posX="48" posY="2">
+        <Initializer text="dbschema:user.primary_email/@label"/>
+      </Label>
+      <Edit colName="primary_email" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.primary_email" posX="67" posY="2" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_secondary_email_label1" posX="1" posY="3">
+        <Initializer text="dbschema:user.secondary_email/@label"/>
+      </Label>
+      <Edit colName="secondary_email" fieldId="5" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.secondary_email" posX="17" posY="3" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_phone_num_label1" posX="48" posY="3">
+        <Initializer text="dbschema:user.phone_num/@label"/>
+      </Label>
+      <Edit colName="phone_num" fieldId="6" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="11" name="user.phone_num" posX="67" posY="3" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_company_label1" posX="1" posY="4">
+        <Initializer text="dbschema:user.company/@label"/>
+      </Label>
+      <Edit colName="company" fieldId="7" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.company" posX="17" posY="4" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_contact_date_label1" posX="48" posY="4">
+        <Initializer text="dbschema:user.contact_date/@label"/>
+      </Label>
+      <DateEdit colName="contact_date" fieldId="8" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="user.contact_date" posX="67" posY="4" sqlTabName="user" tabIndex="-1" widget="DateEdit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </DateEdit>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_reason_for_cert_label1" posX="1" posY="5">
+        <Initializer text="dbschema:user.reason_for_cert/@label"/>
+      </Label>
+      <Edit colName="reason_for_cert" fieldId="9" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="user.reason_for_cert" posX="17" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_seeking_employment_label1" posX="48" posY="5">
+        <Initializer text="dbschema:user.seeking_employment/@label"/>
+      </Label>
+      <ComboBox colName="seeking_employment" fieldId="10" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="3" items="YES, NO" name="user.seeking_employment" posX="67" posY="5" scroll="true" sqlTabName="user" tabIndex="-1" widget="ComboBox">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+        <Item lstrtext="false" name="1" text="YES"/>
+        <Item lstrtext="false" name="0" text="NO"/>
+      </ComboBox>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_fully_certified_label1" posX="1" posY="6">
+        <Initializer text="dbschema:user.fully_certified/@label"/>
+      </Label>
+      <ComboBox colName="fully_certified" fieldId="11" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="2" items="YES, NO" name="user.fully_certified" posX="17" posY="6" scroll="true" sqlTabName="user" tabIndex="-1" widget="ComboBox">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+        <Item lstrtext="false" name="1" text="YES"/>
+        <Item lstrtext="false" name="0" text="NO"/>
+      </ComboBox>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_payment_recieved_label1" posX="48" posY="6">
+        <Initializer text="dbschema:user.payment_recieved/@label"/>
+      </Label>
+      <ComboBox colName="payment_recieved" fieldId="12" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="3" items="YES, NO" name="user.payment_recieved" posX="67" posY="6" sqlTabName="user" tabIndex="-1" widget="ComboBox">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+        <Item lstrtext="false" name="1" text="YES"/>
+        <Item lstrtext="false" name="0" text="NO"/>
+      </ComboBox>
+      <Label gridHeight="1" gridWidth="15" justify="left" name="user_test_url_label1" posX="1" posY="7">
+        <Initializer text="dbschema:user.test_url/@label"/>
+      </Label>
+      <Edit colName="test_url" fieldId="13" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="user.test_url" posX="17" posY="7" scroll="true" sqlTabName="user" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="18" justify="left" name="user_lockout_date_label1" posX="48" posY="7">
+        <Initializer text="dbschema:user.lockout_date/@label"/>
+      </Label>
+      <DateEdit colName="lockout_date" fieldId="14" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="user.lockout_date" posX="67" posY="7" sqlTabName="user" tabIndex="-1" widget="DateEdit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </DateEdit>
+    </Grid>
+  </Form>
+  <DiagramLayout>
+    <![CDATA[AAAAAgAAAEwAewA5ADMANQBhAGUAMgAxADgALQA2ADUAYwA4AC0ANABiAGQAMQAtADgAZQAxAGIALQBmAGIANQA0AGYAZgAzAGMAMgA3ADYAOQB9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==]]>
+  </DiagramLayout>
+</ManagedForm>

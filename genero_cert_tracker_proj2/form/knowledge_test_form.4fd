@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ManagedForm databaseName="cert_trackerdb_2" fileVersion="40100" gstVersion="50102" name="managedform" uid="{a51a063b-39d6-4dc6-90ef-efd382118033}">
+  <AGSettings>
+    <DynamicProperties version="4"/>
+  </AGSettings>
+  <Record masterTable="knowledgetest" name="record1" uid="{146700b9-217f-44bc-84fa-19b2ec633634}">
+    <RecordField colName="userid" fieldIdRef="1" fieldType="TABLE_COLUMN" name="knowledgetest.userid" sqlTabName="knowledgetest" uid="{2d576c73-b148-4639-8423-962b05a6b9b8}"/>
+    <RecordField colName="testid" fieldIdRef="2" fieldType="TABLE_COLUMN" name="knowledgetest.testid" sqlTabName="knowledgetest" uid="{70c26c3d-44a0-4882-a47d-c54bf9c727c1}"/>
+    <RecordField colName="grade" fieldIdRef="3" fieldType="TABLE_COLUMN" name="knowledgetest.grade" sqlTabName="knowledgetest" uid="{a1a2be66-4560-4dbb-9df9-6c513e103a82}"/>
+    <RecordField colName="date_completed" fieldIdRef="4" fieldType="TABLE_COLUMN" name="knowledgetest.date_completed" sqlTabName="knowledgetest" uid="{611b08d7-550a-4667-838c-56b4048a5b4f}"/>
+    <RecordField colName="genero_version" fieldIdRef="5" fieldType="TABLE_COLUMN" name="knowledgetest.genero_version" sqlTabName="knowledgetest" uid="{41d69c41-deda-4127-b15f-6317cb0f3ffb}"/>
+  </Record>
+  <Form gridHeight="7" gridWidth="85" name="form" text="Form">
+    <Grid gridHeight="5" gridWidth="83" name="cert_trackerdb_21" posX="1" posY="1">
+      <Label gridHeight="1" gridWidth="14" justify="left" name="knowledgetest_userid_label1" posX="1" posY="1">
+        <Initializer text="dbschema:knowledgetest.userid/@label"/>
+      </Label>
+      <Edit colName="userid" fieldId="1" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="knowledgetest.userid" posX="16" posY="1" scroll="true" sqlTabName="knowledgetest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="knowledgetest_testid_label1" posX="47" posY="1">
+        <Initializer text="dbschema:knowledgetest.testid/@label"/>
+      </Label>
+      <Edit colName="testid" fieldId="2" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="knowledgetest.testid" posX="62" posY="1" scroll="true" sqlTabName="knowledgetest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="knowledgetest_grade_label1" posX="1" posY="2">
+        <Initializer text="dbschema:knowledgetest.grade/@label"/>
+      </Label>
+      <Edit colName="grade" fieldId="3" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="20" name="knowledgetest.grade" posX="16" posY="2" scroll="true" sqlTabName="knowledgetest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="knowledgetest_date_completed_label1" posX="47" posY="2">
+        <Initializer text="dbschema:knowledgetest.date_completed/@label"/>
+      </Label>
+      <DateEdit colName="date_completed" fieldId="4" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="10" name="knowledgetest.date_completed" posX="62" posY="2" sqlTabName="knowledgetest" tabIndex="-1" widget="DateEdit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </DateEdit>
+      <Label gridHeight="1" gridWidth="14" justify="left" name="knowledgetest_genero_version_label1" posX="1" posY="3">
+        <Initializer text="dbschema:knowledgetest.genero_version/@label"/>
+      </Label>
+      <Edit colName="genero_version" fieldId="5" fieldType="TABLE_COLUMN" gridHeight="1" gridWidth="30" name="knowledgetest.genero_version" posX="16" posY="3" scroll="true" sqlTabName="knowledgetest" tabIndex="-1" widget="Edit">
+        <Initializer title="dbschema:$(sqlTabName).$(colName)/@label"/>
+      </Edit>
+    </Grid>
+  </Form>
+  <DiagramLayout>
+    <![CDATA[AAAAAgAAAEwAewAxADQANgA3ADAAMABiADkALQAyADEANwBmAC0ANAA0AGIAYwAtADgANABmAGEALQAxADkAYgAyAGUAYwA2ADMAMwA2ADMANAB9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==]]>
+  </DiagramLayout>
+</ManagedForm>

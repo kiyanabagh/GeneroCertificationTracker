@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ManagedForm fileVersion="40100" gstVersion="50102" name="managedform" uid="{b9e3538d-fed8-4c45-8716-b6f3e2591423}">
+  <AGSettings>
+    <DynamicProperties version="4"/>
+  </AGSettings>
+  <Form gridHeight="25" gridWidth="80" name="form" text="Form">
+    <Grid gridHeight="10" gridWidth="66" name="grid1" posX="1" posY="0">
+      <Button gridHeight="1" gridWidth="12" name="input_user" posX="7" posY="0" tabIndex="-1" text="Input User"/>
+      <Button gridHeight="1" gridWidth="12" name="print_counts_report" posX="45" posY="0" tabIndex="-1" text="View Counts Report"/>
+      <Button gridHeight="1" gridWidth="16" name="edit_knowledge_test" posX="6" posY="1" tabIndex="-1" text="Input Knowledge Test Info"/>
+      <Button gridHeight="1" gridWidth="12" name="print_ranking_report" posX="45" posY="1" tabIndex="-1" text="View Ranking Report"/>
+      <Button gridHeight="1" gridWidth="16" name="edit_practical_test" posX="6" posY="2" tabIndex="-1" text="Input Practical Test Info"/>
+      <Button gridHeight="1" gridWidth="14" name="print_in_progress_report" posX="43" posY="2" tabIndex="-1" text="View In-Progress Report"/>
+      <Button gridHeight="1" gridWidth="12" name="print_general_report" posX="45" posY="3" tabIndex="-1" text="View General Report"/>
+      <Button gridHeight="1" gridWidth="12" name="print_grouped_report" posX="45" posY="4" tabIndex="-1" text="View Grouped Report"/>
+      <Button gridHeight="1" gridWidth="14" name="print_open_to_work_report" posX="43" posY="5" tabIndex="-1" text="Vew Open-To-Work Report"/>
+      <Button gridHeight="1" gridWidth="14" name="print_individual_report" posX="43" posY="6" tabIndex="-1" text="View Individual Report"/>
+      <Button gridHeight="1" gridWidth="14" name="print_fully_certified" posX="43" posY="7" tabIndex="-1" text="View Fully Certified Report"/>
+      <Button gridHeight="1" gridWidth="18" name="print_passed_knowledge_test" posX="39" posY="8" tabIndex="-1" text="View Passed Knowledge Test Report"/>
+    </Grid>
+  </Form>
+  <DiagramLayout>
+    <![CDATA[AAAAAg==]]>
+  </DiagramLayout>
+</ManagedForm>
