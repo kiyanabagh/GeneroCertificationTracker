@@ -45,6 +45,8 @@ MENU
         CALL print_passed_knowledge_test_report()
     ON ACTION print_fully_certified
         CALL print_fully_certified_report()
+    ON ACTION lookup_userid
+        CALL print_lookup_userid_report()
 
 }
 
@@ -115,6 +117,43 @@ FUNCTION db_drop_tables()
     EXECUTE IMMEDIATE "DROP TABLE Certification"
     EXECUTE IMMEDIATE "DROP TABLE KnowledgeTest"
 
+END FUNCTION
+
+FUNCTION print_lookup_userid_report()
+    DEFINE search_fname VARCHAR(50)
+    DEFINE search_lname VARCHAR(50)
+    DEFINE rec_user RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100)
+    END RECORD
+
+    PROMPT "Enter first name (leave blank to skip): " FOR search_fname
+    PROMPT "Enter last name (leave blank to skip): " FOR search_lname
+
+    LET search_fname = search_fname CLIPPED
+    LET search_lname = search_lname CLIPPED
+
+    -- One cursor, universal filter
+    DECLARE lookup_cur CURSOR FOR
+        SELECT userid, fname, lname, primary_email
+          FROM User
+         WHERE (UPPER(fname) = UPPER(search_fname) OR search_fname = '')
+           AND (UPPER(lname) = UPPER(search_lname) OR search_lname = '')
+         ORDER BY lname, fname
+
+    START REPORT lookup_userid_report
+    OPEN lookup_cur
+    WHILE TRUE
+        FETCH lookup_cur INTO rec_user.*
+        IF SQLCA.SQLCODE <> 0 THEN
+            EXIT WHILE
+        END IF
+        OUTPUT TO REPORT lookup_userid_report(rec_user.*)
+    END WHILE
+    CLOSE lookup_cur
+    FINISH REPORT lookup_userid_report
 END FUNCTION
 
 FUNCTION print_counts_report()
@@ -496,55 +535,36 @@ END FUNCTION
 FUNCTION print_individual_report()
     DEFINE p_userid VARCHAR(30)
     DEFINE seeking_txt CHAR(3)
-    DEFINE do_lookup CHAR(1)
-    DEFINE search_fname VARCHAR(50)
-    DEFINE search_lname VARCHAR(50)
-    DEFINE rec_user RECORD
+    DEFINE rec RECORD
         userid VARCHAR(30),
         fname VARCHAR(50),
-        lname VARCHAR(50)
+        lname VARCHAR(50),
+        primary_email VARCHAR(100),
+        secondary_email VARCHAR(100),
+        phone_num VARCHAR(11),
+        company VARCHAR(100),
+        contact_date DATE,
+        reason_for_cert BIGINT,
+        seeking_employment BOOLEAN,
+        k_testid VARCHAR(20),
+        k_grade BOOLEAN,
+        k_date_completed DATE,
+        k_genero_version VARCHAR(50),
+        p_testid VARCHAR(20),
+        p_grade BOOLEAN,
+        p_status BIGINT,
+        p_scenario BIGINT,
+        p_date_started DATE,
+        p_date_completed DATE,
+        p_comment VARCHAR(300),
+        p_genero_version VARCHAR(50),
+        certid VARCHAR(30),
+        cert_date DATE
     END RECORD
-    DEFINE match_found BOOLEAN
+    
+    DISPLAY "Enter the User ID of the person you want to report on:"
+    PROMPT "User ID: " FOR p_userid
 
-    -- Ask if they want to look up by name
-    PROMPT "Do you want to look up the UserID by name? (Y/N): " FOR do_lookup
-
-    IF do_lookup IS NOT NULL AND (do_lookup == "Y" OR do_lookup == "y") THEN
-        PROMPT "Enter first name: " FOR search_fname
-        PROMPT "Enter last name: " FOR search_lname
-
-        DECLARE match_cur CURSOR FOR
-            SELECT userid, fname, lname FROM User
-            WHERE fname = search_fname AND lname = search_lname
-
-        OPEN match_cur
-        LET match_found = FALSE
-        WHILE TRUE
-            FETCH match_cur INTO rec_user.*
-            IF SQLCA.SQLCODE <> 0 THEN
-                EXIT WHILE
-            END IF
-            IF NOT match_found THEN
-                DISPLAY "Matching users:"
-                LET match_found = TRUE
-            END IF
-            DISPLAY "    UserID: ", rec_user.userid, " | Name: ", rec_user.fname, " ", rec_user.lname
-        END WHILE
-        CLOSE match_cur
-
-        IF NOT match_found THEN
-            DISPLAY "No userids found for that name."
-            RETURN
-        END IF
-
-        PROMPT "Enter the User ID of the person you want to report on: " FOR p_userid
-
-    ELSE
-        DISPLAY "Enter the User ID of the person you want to report on:"
-        PROMPT "User ID: " FOR p_userid
-    END IF
-
-    -- Your existing code below (unchanged):
     DECLARE all_info_cur CURSOR FOR
         SELECT
             u.userid, u.fname, u.lname, u.primary_email, u.secondary_email, u.phone_num,
@@ -1173,4 +1193,27 @@ REPORT individual_report(rec)
         PAGE TRAILER
             SKIP 1 LINES
             PRINT "--- End of Individual Report ---"
+END REPORT
+
+REPORT lookup_userid_report(rec_user)
+    DEFINE rec_user RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100)
+    END RECORD
+
+    FORMAT
+        PAGE HEADER
+            SKIP 1 LINE
+            PRINT "UserID Lookup Results"
+            SKIP 1 LINE
+            PRINT "UserID", "   Name", "   Email"
+            PRINT "-----------------------------------------------"
+            SKIP 1 LINE
+        ON EVERY ROW
+            PRINT rec_user.userid CLIPPED, "   ", rec_user.fname CLIPPED, " ", rec_user.lname CLIPPED, "   ", rec_user.primary_email CLIPPED
+        PAGE TRAILER
+            SKIP 2 LINES
+            PRINT "--- End of Report ---"
 END REPORT
