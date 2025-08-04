@@ -22,11 +22,9 @@ MENU
     ON ACTION input_user
         CALL user_main.user_form_driver()
     ON ACTION edit_knowledge_test
-        CALL knowledge_test_main.ktest_form_driver()
-        
+        CALL knowledge_test_main.ktest_form_driver()        
     ON ACTION edit_practical_test
         CALL practical_test_main.ptest_form_driver()
-        {
     ON ACTION print_counts_report
         CALL print_counts_report()
     ON ACTION print_ranking_report
@@ -47,8 +45,6 @@ MENU
         CALL print_fully_certified_report()
     ON ACTION lookup_userid
         CALL print_lookup_userid_report()
-
-}
 
 
 END MENU
@@ -119,128 +115,70 @@ FUNCTION db_drop_tables()
 
 END FUNCTION
 
-FUNCTION print_lookup_userid_report()
-    DEFINE search_fname VARCHAR(50)
-    DEFINE search_lname VARCHAR(50)
-    DEFINE rec_user RECORD
-        userid VARCHAR(30),
-        fname VARCHAR(50),
-        lname VARCHAR(50),
-        primary_email VARCHAR(100)
+
+FUNCTION print_counts_report()
+    DEFINE rec_count RECORD
+        section CHAR(20),
+        group_value VARCHAR(100),
+        passed_kt INTEGER,
+        failed_kt INTEGER,
+        passed_pt INTEGER,
+        failed_pt INTEGER
     END RECORD
 
-    PROMPT "Enter first name (leave blank to skip): " FOR search_fname
-    PROMPT "Enter last name (leave blank to skip): " FOR search_lname
+    DECLARE count_cur CURSOR FOR
+        -- Group by Company
+        SELECT 'COMPANY' AS section, company AS group_value,
+            SUM(CASE WHEN kt.grade = TRUE THEN 1 ELSE 0 END) AS passed_kt,
+            SUM(CASE WHEN kt.grade = FALSE THEN 1 ELSE 0 END) AS failed_kt,
+            SUM(CASE WHEN pt.grade = TRUE THEN 1 ELSE 0 END) AS passed_pt,
+            SUM(CASE WHEN pt.grade = FALSE THEN 1 ELSE 0 END) AS failed_pt
+        FROM User u
+            LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
+            LEFT JOIN PracticalTest pt ON u.userid = pt.userid
+        GROUP BY company
 
-    LET search_fname = search_fname CLIPPED
-    LET search_lname = search_lname CLIPPED
+        UNION ALL
 
-    -- One cursor, universal filter
-    DECLARE lookup_cur CURSOR FOR
-        SELECT userid, fname, lname, primary_email
-          FROM User
-         WHERE (UPPER(fname) = UPPER(search_fname) OR search_fname = '')
-           AND (UPPER(lname) = UPPER(search_lname) OR search_lname = '')
-         ORDER BY lname, fname
+        -- Group by Open To Work (seeking_employment)
+        SELECT 'OTW' AS section,
+            (CASE WHEN u.seeking_employment THEN 'Yes' ELSE 'No' END) AS group_value,
+            SUM(CASE WHEN kt.grade = TRUE THEN 1 ELSE 0 END) AS passed_kt,
+            SUM(CASE WHEN kt.grade = FALSE THEN 1 ELSE 0 END) AS failed_kt,
+            SUM(CASE WHEN pt.grade = TRUE THEN 1 ELSE 0 END) AS passed_pt,
+            SUM(CASE WHEN pt.grade = FALSE THEN 1 ELSE 0 END) AS failed_pt
+        FROM User u
+            LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
+            LEFT JOIN PracticalTest pt ON u.userid = pt.userid
+        GROUP BY u.seeking_employment
 
-    START REPORT lookup_userid_report
-    OPEN lookup_cur
+        UNION ALL
+
+        -- Group by Reason for Cert
+        SELECT 'REASON' AS section, CAST(u.reason_for_cert AS CHAR(20)) AS group_value,
+            SUM(CASE WHEN kt.grade = TRUE THEN 1 ELSE 0 END) AS passed_kt,
+            SUM(CASE WHEN kt.grade = FALSE THEN 1 ELSE 0 END) AS failed_kt,
+            SUM(CASE WHEN pt.grade = TRUE THEN 1 ELSE 0 END) AS passed_pt,
+            SUM(CASE WHEN pt.grade = FALSE THEN 1 ELSE 0 END) AS failed_pt
+        FROM User u
+            LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
+            LEFT JOIN PracticalTest pt ON u.userid = pt.userid
+        GROUP BY u.reason_for_cert
+
+        ORDER BY section, group_value
+    ;
+
+    START REPORT counts_report
+    OPEN count_cur
     WHILE TRUE
-        FETCH lookup_cur INTO rec_user.*
+        FETCH count_cur INTO rec_count.*
         IF SQLCA.SQLCODE <> 0 THEN
             EXIT WHILE
         END IF
-        OUTPUT TO REPORT lookup_userid_report(rec_user.*)
+        OUTPUT TO REPORT counts_report(rec_count.*)
     END WHILE
-    CLOSE lookup_cur
-    FINISH REPORT lookup_userid_report
-END FUNCTION
-
-FUNCTION print_counts_report()
-    DEFINE rec_company RECORD
-        company VARCHAR(100),
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
-    END RECORD
-
-    DEFINE rec_seeking RECORD
-        seeking_employment BOOLEAN,
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
-    END RECORD
-
-    DEFINE rec_reason RECORD
-        reason_for_cert BIGINT,
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
-    END RECORD
-
-    -- --------- SECTION 1: By Company ----------
-    DECLARE c_company CURSOR FOR
-        SELECT 
-            u.company,
-            SUM(CASE WHEN kt.grade >= 75 THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade <= 75 THEN 1 ELSE 0 END) AS fail_knowledge,
-            SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
-            SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
-        FROM User u
-        LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
-        LEFT JOIN PracticalTest pt ON u.userid = pt.userid
-        GROUP BY u.company
-        ORDER BY u.company
-
-    START REPORT counts_report_company
-    FOREACH c_company INTO rec_company.*
-        OUTPUT TO REPORT counts_report_company(rec_company.*)
-    END FOREACH
-    FINISH REPORT counts_report_company
-
-    -- --------- SECTION 2: By Seeking Employment ----------
-    DECLARE c_seeking CURSOR FOR
-        SELECT 
-            u.seeking_employment,
-            SUM(CASE WHEN kt.grade >= 75  THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade <=75   THEN 1 ELSE 0 END) AS fail_knowledge,
-            SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
-            SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
-        FROM User u
-        LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
-        LEFT JOIN PracticalTest pt ON u.userid = pt.userid
-        GROUP BY u.seeking_employment
-        ORDER BY u.seeking_employment DESC
-
-    START REPORT counts_report_seeking
-    FOREACH c_seeking INTO rec_seeking.*
-        OUTPUT TO REPORT counts_report_seeking(rec_seeking.*)
-    END FOREACH
-    FINISH REPORT counts_report_seeking
-
-    -- --------- SECTION 3: By Reason for Certification ----------
-    DECLARE c_reason CURSOR FOR
-        SELECT 
-            u.reason_for_cert,
-            SUM(CASE WHEN kt.grade >= 75 THEN 1 ELSE 0 END) AS pass_knowledge,
-            SUM(CASE WHEN kt.grade <= 75 THEN 1 ELSE 0 END) AS fail_knowledge,
-            SUM(CASE WHEN pt.grade = 1 THEN 1 ELSE 0 END) AS pass_practical,
-            SUM(CASE WHEN pt.grade = 0 THEN 1 ELSE 0 END) AS fail_practical
-        FROM User u
-        LEFT JOIN KnowledgeTest kt ON u.userid = kt.userid
-        LEFT JOIN PracticalTest pt ON u.userid = pt.userid
-        GROUP BY u.reason_for_cert
-        ORDER BY u.reason_for_cert
-
-    START REPORT counts_report_reason
-    FOREACH c_reason INTO rec_reason.*
-        OUTPUT TO REPORT counts_report_reason(rec_reason.*)
-    END FOREACH
-    FINISH REPORT counts_report_reason
-
+    CLOSE count_cur
+    FINISH REPORT counts_report
 END FUNCTION
 
 FUNCTION print_ranking_report()
@@ -592,123 +530,91 @@ FUNCTION print_individual_report()
     FINISH REPORT individual_report
 END FUNCTION
 
-
-REPORT counts_report_company(rec_company)
-    DEFINE rec_company RECORD
-        company VARCHAR(100),
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
+FUNCTION print_lookup_userid_report()
+    DEFINE search_fname VARCHAR(50)
+    DEFINE search_lname VARCHAR(50)
+    DEFINE rec_user RECORD
+        userid VARCHAR(30),
+        fname VARCHAR(50),
+        lname VARCHAR(50),
+        primary_email VARCHAR(100)
     END RECORD
+
+    PROMPT "Enter first name (leave blank to skip): " FOR search_fname
+    PROMPT "Enter last name (leave blank to skip): " FOR search_lname
+
+    LET search_fname = search_fname CLIPPED
+    LET search_lname = search_lname CLIPPED
+
+    -- One cursor, universal filter
+    DECLARE lookup_cur CURSOR FOR
+        SELECT userid, fname, lname, primary_email
+          FROM User
+         WHERE (UPPER(fname) = UPPER(search_fname) OR search_fname = '')
+           AND (UPPER(lname) = UPPER(search_lname) OR search_lname = '')
+         ORDER BY lname, fname
+
+    START REPORT lookup_userid_report
+    OPEN lookup_cur
+    WHILE TRUE
+        FETCH lookup_cur INTO rec_user.*
+        IF SQLCA.SQLCODE <> 0 THEN
+            EXIT WHILE
+        END IF
+        OUTPUT TO REPORT lookup_userid_report(rec_user.*)
+    END WHILE
+    CLOSE lookup_cur
+    FINISH REPORT lookup_userid_report
+END FUNCTION
+
+
+-- ********************REPORT BLOCKS********************
+REPORT counts_report(rec_count)
+    DEFINE rec_count RECORD
+        section CHAR(20),
+        group_value VARCHAR(100),
+        passed_kt INTEGER,
+        failed_kt INTEGER,
+        passed_pt INTEGER,
+        failed_pt INTEGER
+    END RECORD
+
+    DEFINE last_section CHAR(20)
 
     FORMAT
         PAGE HEADER
             SKIP 2 LINES
-            PRINT "Counts Report by Company"
+            PRINT "Certification Counts Report"
             SKIP 1 LINE
-            PRINT COLUMN 2, "Company name",
-                  COLUMN 19, "Passed knowledge",
-                  COLUMN 39, "Failed knowledge", 
-                  COLUMN 59," Pass practical",
-                  COLUMN 79, "Fail Practical"
-            SKIP 2 LINES
+            PRINT COLUMN 2, "Group",
+                  COLUMN 25, "Passed(KT)",
+                  COLUMN 38, "Failed(KT)",
+                  COLUMN 51, "Passed(PT)",
+                  COLUMN 64, "Failed(PT)"
+            SKIP 1 LINE
 
         ON EVERY ROW
-            PRINT COLUMN 2, rec_company.company CLIPPED,
-                  COLUMN 19, rec_company.pass_knowledge USING "###",
-                  COLUMN 39, rec_company.fail_knowledge USING "###", 
-                  COLUMN 59, rec_company.pass_practical USING "###",
-                  COLUMN 57, rec_company.fail_practical USING "###"
-            SKIP 1 LINE
-
-        PAGE TRAILER
-            SKIP 2 LINES
-            PRINT "--- End of Company Counts ---"
-            SKIP 2 LINES
-
-END REPORT
-
-REPORT counts_report_seeking(rec_seeking)
-    DEFINE rec_seeking RECORD
-        seeking_employment BOOLEAN,
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
-    END RECORD
-
-    DEFINE open_to_work CHAR(3)
-
-    FORMAT
-        PAGE HEADER
-            SKIP 2 LINES
-            PRINT "Counts Report by Seeking Employment (Open to Work)"
-            SKIP 1 LINE
-
-            PRINT COLUMN 2, "Open To Work",
-                  COLUMN 19, "Passed knowledge",
-                  COLUMN 39, "Failed knowledge", 
-                  COLUMN 59," Pass practical",
-                  COLUMN 79, "Fail Practical"
-            SKIP 2 LINES
-
-        ON EVERY ROW
-            IF rec_seeking.seeking_employment THEN
-                LET open_to_work = "Yes"
-            ELSE
-                LET open_to_work = "No"
+            IF last_section IS NULL OR rec_count.section <> last_section THEN
+                SKIP 1 LINE
+                PRINT "=== ", rec_count.section, " ==="
+                LET last_section = rec_count.section
             END IF
 
-            PRINT COLUMN 2, open_to_work, 
-                  COLUMN 19, rec_seeking.pass_knowledge USING "###", 
-                  COLUMN 39, rec_seeking.fail_knowledge USING "###", 
-                  COLUMN 59, rec_seeking.pass_practical USING "###",
-                  COLUMN 79, rec_seeking.fail_practical USING "###"
+            PRINT COLUMN 2, rec_count.group_value CLIPPED,
+                  COLUMN 25, rec_count.passed_kt USING "###",
+                  COLUMN 38, rec_count.failed_kt USING "###",
+                  COLUMN 51, rec_count.passed_pt USING "###",
+                  COLUMN 64, rec_count.failed_pt USING "###"
             SKIP 1 LINE
 
         PAGE TRAILER
             SKIP 2 LINES
-            PRINT "--- End of Open to Work Counts ---"
+            PRINT "--- End of Counts Report ---"
             SKIP 2 LINES
 
 END REPORT
 
-REPORT counts_report_reason(rec_reason)
-    DEFINE rec_reason RECORD
-        reason_for_cert BIGINT,
-        pass_knowledge INTEGER,
-        fail_knowledge INTEGER,
-        pass_practical INTEGER,
-        fail_practical INTEGER
-    END RECORD
 
-    FORMAT
-        PAGE HEADER
-            SKIP 2 LINES
-            PRINT "Counts Report by Reason for Certification"
-            SKIP 1 LINE
-            PRINT COLUMN 2, "Reason for Certification",
-                  COLUMN 30, "Passed knowledge",
-                  COLUMN 50, "Failed knowledge", 
-                  COLUMN 70," Pass practical",
-                  COLUMN 90, "Fail Practical"
-            SKIP 2 LINES
-
-        ON EVERY ROW
-            PRINT COLUMN 2, rec_reason.reason_for_cert USING "#####",
-                 COLUMN 30, rec_reason.pass_knowledge USING "###",
-                  COLUMN 50, rec_reason.fail_knowledge USING "###", 
-                  COLUMN 70, rec_reason.pass_practical USING "###", 
-                  COLUMN 90, rec_reason.fail_practical USING "###"
-            SKIP 1 LINE
-
-        PAGE TRAILER
-            SKIP 2 LINES
-            PRINT "--- End of Reason for Cert Counts ---"
-            SKIP 2 LINES
-
-END REPORT
 
 REPORT ranking_report(rec_rank)
     DEFINE rec_rank RECORD
