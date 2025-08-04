@@ -1,2 +1,0 @@
-dbi.database.certtracker.source   = "certtrackerdb.db"
-dbi.database.certtracker.driver   = "dbmsqt"
