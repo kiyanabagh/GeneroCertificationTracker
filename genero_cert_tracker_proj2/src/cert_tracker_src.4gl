@@ -540,8 +540,8 @@ FUNCTION print_lookup_userid_report()
         primary_email VARCHAR(100)
     END RECORD
 
-    PROMPT "Enter first name (leave blank to skip): " FOR search_fname
-    PROMPT "Enter last name (leave blank to skip): " FOR search_lname
+    PROMPT "Enter first name: " FOR search_fname
+    PROMPT "Enter last name: " FOR search_lname
 
     LET search_fname = search_fname CLIPPED
     LET search_lname = search_lname CLIPPED
