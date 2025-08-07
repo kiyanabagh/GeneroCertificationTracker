@@ -45,7 +45,6 @@ FUNCTION get_user_count(p_where_clause STRING) RETURNS INTEGER
     DEFINE sql_text STRING
     DEFINE cust_cnt INTEGER
 
--- should we have this in a TRY/CATCH or with WHENEVER ERROR?
     LET sql_text = "SELECT COUNT(*) FROM user WHERE " || p_where_clause
     PREPARE cust_cnt_stmt FROM sql_text
     EXECUTE cust_cnt_stmt INTO cust_cnt
@@ -79,7 +78,6 @@ FUNCTION user_select(p_where_clause STRING) RETURNS BOOLEAN
 END FUNCTION
 
 FUNCTION fetch_user(p_fetch_flag SMALLINT) RETURNS BOOLEAN
-
     CASE p_fetch_flag
         WHEN 0
             FETCH FIRST user_cursor INTO mr_user.*
@@ -116,7 +114,13 @@ FUNCTION fetch_rel_user(p_fetch_flag SMALLINT) RETURNS user_data.t_user_id
 END FUNCTION
 
 FUNCTION display_user() RETURNS()
-
+DEFINE updated boolean
+    CALL check_is_certified(mr_user.userid) RETURNING updated
+    
+    IF updated THEN 
+        LET mr_user.fully_certified = 1
+    END IF 
+    
     DISPLAY BY NAME mr_user.*
 
 END FUNCTION

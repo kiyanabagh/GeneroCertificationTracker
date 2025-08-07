@@ -1,4 +1,3 @@
-
 IMPORT FGL user_main
 IMPORT FGL knowledge_test_main
 IMPORT FGL practical_test_main

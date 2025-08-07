@@ -4,42 +4,51 @@
     <Node path=""/>
     <Node path="/Group[group]"/>
     <Node path="/Group[group]/Application[application]"/>
+    <Node path="/Group[group]/Application[application]/forms[virtual-folder]"/>
     <Node path="/Group[group]/Application[application]/knowledge_test_files[virtual-folder]"/>
     <Node path="/Group[group]/Application[application]/practical_test_files[virtual-folder]"/>
     <Node path="/Group[group]/Application[application]/user_info_files[virtual-folder]"/>
     <Node path="/Group[group]/Databases[library]"/>
   </ExpandedNodes>
   <OpenDocuments>
-    <Document container="true" filePath="src/cert_tracker_src.4gl" locator="23:42" module="mod-ce3">
+    <Document container="true" filePath="src/cert_tracker_src.4gl" locator="116:1" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/knowledge_test_main.4gl" locator="1:1:124:0" module="mod-ce3">
+    <Document container="true" filePath="src/knowledge_test_main.4gl" locator="51:20" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/knowledge_test_query.4gl" locator="1:1:167:12" module="mod-ce3">
+    <Document container="true" filePath="src/knowledge_test_query.4gl" locator="5:1:20:24" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/user_main.4gl" locator="10:1" module="mod-ce3">
+    <Document container="true" filePath="src/user_main.4gl" locator="45:1" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/knowledge_test_data.4gl" locator="1:1:145:0" module="mod-ce3">
+    <Document container="true" filePath="src/knowledge_test_data.4gl" locator="173:14" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/user_data.4gl" locator="1:1" module="mod-ce3">
+    <Document container="true" filePath="src/user_data.4gl" locator="7:1:10:37" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/user_query_test.4gl" locator="1:1" module="mod-ce3">
+    <Document container="true" filePath="src/user_query_test.4gl" locator="120:5" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/practical_test_data.4gl" locator="104:42" module="mod-ce3">
+    <Document container="true" filePath="src/practical_test_data.4gl" locator="190:14" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/practical_test_query.4gl" locator="167:13" module="mod-ce3">
+    <Document container="true" filePath="src/practical_test_query.4gl" locator="24:20" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
-    <Document container="true" filePath="src/practical_test_main.4gl" locator="124:1" module="mod-ce3">
+    <Document container="true" filePath="src/practical_test_main.4gl" locator="41:20" module="mod-ce3">
+      <Data name="8" value="CP1252"/>
+    </Document>
+    <Document container="true" filePath="form/practical_test_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="form/user_info_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="form/main_menu_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="form/knowledge_test_form.4fd" locator="" module="mod-fd"/>
+    <Document container="true" filePath="db/cert_trackerdb_2.4db" locator="" module="mod-db3"/>
+    <Document container="true" filePath="db/insert_example_recs.txt" locator="28:13" module="mod-ce3">
       <Data name="8" value="CP1252"/>
     </Document>
   </OpenDocuments>
-  <CurrentDocument filePath="src/practical_test_data.4gl" module="mod-ce3"/>
+  <CurrentDocument filePath="src/user_data.4gl" module="mod-ce3"/>
 </WorkspaceViewState>

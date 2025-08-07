@@ -128,7 +128,7 @@ PUBLIC FUNCTION delete_ktest(current_ktest t_ktest_id) RETURNS t_ktest_id
     END IF
 
     TRY
-        DELETE FROM ktest WHERE ktestid = current_ktest
+        DELETE FROM knowledgetest WHERE testid = current_ktest
     CATCH
         ERROR SFMT("DELETE failed: %1", SQLERRMESSAGE)
         RETURN current_ktest
@@ -145,6 +145,7 @@ PUBLIC FUNCTION delete_ktest(current_ktest t_ktest_id) RETURNS t_ktest_id
     RETURN 0
 
 END FUNCTION
+{
 
 PUBLIC FUNCTION certification_complete_test2(current_test_id) RETURNS boolean
 
@@ -169,4 +170,4 @@ RETURN true
 END IF 
 
 RETURN false
-END FUNCTION
+END FUNCTION}

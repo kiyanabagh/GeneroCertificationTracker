@@ -1,0 +1,35 @@
+INSERT INTO user VALUES (1, 'Alice', 'Smith', 'alice@example.com', NULL, '1234567890', 'TechCorp', '2025-08-01', 1, 1, 0, 1, 'url1', NULL);
+INSERT INTO user VALUES (2, 'Bob', 'Jones', 'bob@example.com', NULL, '1234567891', 'CodeInc', '2025-08-02', 2, 0, 1, 1, 'url2', NULL);
+INSERT INTO user VALUES (3, 'Charlie', 'Brown', 'charlie@example.com', NULL, '1234567892', 'BuildIt', '2025-08-03', 3, 1, 0, 1, 'url3', NULL);
+INSERT INTO user VALUES (4, 'Diana', 'Prince', 'diana@example.com', NULL, '1234567893', 'AmazonTech', '2025-08-04', 1, 0, 0, 1, 'url4', NULL);
+INSERT INTO user VALUES (5, 'Eve', 'Torres', 'eve@example.com', NULL, '1234567894', 'SafeSoft', '2025-08-05', 2, 1, 1, 1, 'url5', NULL);
+INSERT INTO user VALUES (6, 'Frank', 'Lee', 'frank@example.com', NULL, '1234567895', 'DevStuff', '2025-08-06', 3, 0, 0, 1, 'url6', NULL);
+INSERT INTO user VALUES (7, 'Grace', 'Kim', 'grace@example.com', NULL, '1234567896', 'NextGen', '2025-08-07', 2, 1, 1, 1, 'url7', NULL);
+
+INSERT INTO user VALUES (8, 'Hank', 'Wright', 'hank@example.com', NULL, '1234567897', 'SecureNow', '2025-08-08', 1, 1, 1, 0, NULL, NULL);
+INSERT INTO user VALUES (9, 'Ivy', 'Chen', 'ivy@example.com', NULL, '1234567898', 'DataHive', '2025-08-09', 2, 0, 1, 0, NULL, NULL);
+INSERT INTO user VALUES (10, 'Jack', 'Hill', 'jack@example.com', NULL, '1234567899', 'InfoTech', '2025-08-10', 3, 0, 0, 0, NULL, NULL);
+INSERT INTO user VALUES (11, 'Karen', 'Scott', 'karen@example.com', NULL, '1234567800', 'MedSys', '2025-08-11', 1, 1, 1, 0, NULL, NULL);
+INSERT INTO user VALUES (12, 'Leo', 'Nguyen', 'leo@example.com', NULL, '1234567801', 'BankSoft', '2025-08-12', 2, 0, 0, 0, NULL, NULL);
+INSERT INTO user VALUES (13, 'Mia', 'Patel', 'mia@example.com', NULL, '1234567802', 'Codeverse', '2025-08-13', 1, 1, 1, 0, NULL, NULL);
+INSERT INTO user VALUES (14, 'Noah', 'Reed', 'noah@example.com', NULL, '1234567803', 'CyberShield', '2025-08-14', 3, 0, 0, 0, NULL, NULL);
+INSERT INTO user VALUES (15, 'Olivia', 'Stone', 'olivia@example.com', NULL, '1234567804', 'VisionWorks', '2025-08-15', 2, 1, 0, 0, NULL, NULL);
+
+
+INSERT INTO practicaltest VALUES (1, 1001, 1, 201, 301, '2025-08-01', '2025-08-02', 'Good job', 'v1.0');
+INSERT INTO practicaltest VALUES (2, 1002, 0, 202, 302, '2025-08-02', '2025-08-03', 'Needs improvement', 'v1.0');
+INSERT INTO practicaltest VALUES (3, 1003, 1, 203, 303, '2025-08-03', '2025-08-04', 'Excellent', 'v1.1');
+INSERT INTO practicaltest VALUES (4, 1004, 1, 204, 304, '2025-08-04', '2025-08-05', 'Great performance', 'v1.1');
+INSERT INTO practicaltest VALUES (5, 1005, 1, 205, 305, '2025-08-05', '2025-08-06', 'Solid work', 'v1.2');
+INSERT INTO practicaltest VALUES (6, 1006, 0, 206, 306, '2025-08-06', '2025-08-07', 'Retry needed', 'v1.0');
+INSERT INTO practicaltest VALUES (7, 1007, 1, 207, 307, '2025-08-07', '2025-08-08', 'Pass with remarks', 'v1.2');
+
+
+INSERT INTO knowledgetest VALUES (8, 2001, 85, '2025-08-08', 'v1.0');
+INSERT INTO knowledgetest VALUES (9, 2002, 90, '2025-08-09', 'v1.0');
+INSERT INTO knowledgetest VALUES (10, 2003, 75, '2025-08-10', 'v1.0');
+INSERT INTO knowledgetest VALUES (11, 2004, 95, '2025-08-11', 'v1.1');
+INSERT INTO knowledgetest VALUES (12, 2005, 88, '2025-08-12', 'v1.0');
+INSERT INTO knowledgetest VALUES (13, 2006, 77, '2025-08-13', 'v1.1');
+INSERT INTO knowledgetest VALUES (14, 2007, 82, '2025-08-14', 'v1.0');
+INSERT INTO knowledgetest VALUES (15, 2008, 79, '2025-08-15', 'v1.0');

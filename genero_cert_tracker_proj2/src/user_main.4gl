@@ -22,6 +22,7 @@ FUNCTION user_form_driver()
             CALL setup_dialog(DIALOG, can_nav)
             IF can_nav THEN
                 LET current_user = user_query_test.fetch_rel_user(0)
+
             END IF
         ON ACTION first
             LET current_user = user_query_test.fetch_rel_user(0)

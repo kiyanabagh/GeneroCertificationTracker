@@ -49,7 +49,6 @@ END FUNCTION
 PRIVATE FUNCTION appupd_ptest(
     au_flag CHAR(1), current_ptest t_ptest_id)
     RETURNS t_ptest_id
-   # DEFINE f_zip_postal STRING, f_phone_num LIKE ptest.phone_num
 
    CASE au_flag
     WHEN "A"
@@ -95,7 +94,6 @@ PRIVATE FUNCTION appupd_ptest(
         END IF 
         DISPLAY BY NAME mr_ptest_rec.testid
 
-        #logic so that if a person fails a scenario, the grade is automatically set to fail and the date is entered
         IF mr_ptest_rec.status == 5 THEN
         LET mr_ptest_rec.status = 0 
             IF mr_ptest_rec.date_completed IS NULL
@@ -144,7 +142,7 @@ PUBLIC FUNCTION delete_ptest(current_ptest t_ptest_id) RETURNS t_ptest_id
     END IF
 
     TRY
-        DELETE FROM ptest WHERE ptestid = current_ptest
+        DELETE FROM practicaltest WHERE testid = current_ptest
     CATCH
         ERROR SFMT("DELETE failed: %1", SQLERRMESSAGE)
         RETURN current_ptest
@@ -162,28 +160,3 @@ PUBLIC FUNCTION delete_ptest(current_ptest t_ptest_id) RETURNS t_ptest_id
 
 END FUNCTION
 
-
-PUBLIC FUNCTION certification_complete_test(current_test_id) RETURNS boolean
-    DEFINE current_test_id LIKE practicaltest.testid
-    DEFINE passed_id LIKE user.userid
-
-    
-SELECT user.userid
-INTO passed_id 
-FROM practicaltest, knowledgetest, user
-WHERE practicaltest.testid = current_test_id 
-AND practicaltest.userid = knowledgetest.userid
-AND practicaltest.grade = 1 
-AND knowledgetest.grade >= 75
-
-IF passed_id IS NOT NULL THEN
-DISPLAY passed_id
-UPDATE user 
-    SET fully_certified = 1
-    WHERE userid = passed_id
-    
-MESSAGE "This user is fully certified!"
- RETURN TRUE 
-END IF 
-RETURN false
-END FUNCTION

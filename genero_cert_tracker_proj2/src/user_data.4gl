@@ -51,7 +51,6 @@ PRIVATE FUNCTION appupd_user(
     au_flag CHAR(1), current_user t_user_id)
     RETURNS t_user_id
 
-   # DEFINE f_zip_postal STRING, f_phone_num LIKE user.phone_num
 
     IF au_flag == "A" THEN
         MESSAGE "Append a new user."
@@ -157,5 +156,39 @@ Public FUNCTION view_practical_tests(current_user t_user_id) RETURNS t_user_id
 
     CALL practical_test_main.ptest_form_driver_forid(current_user)
 RETURN current_user
-END function
+END FUNCTION
+
+PUBLIC FUNCTION check_is_certified(current_user t_user_id) RETURNS BOOLEAN 
+DEFINE counts INTEGER 
+
+SELECT COUNT(*)
+INTO counts 
+FROM practicaltest, knowledgetest, user
+WHERE practicaltest.userid = current_user
+AND knowledgetest.userid = current_user
+AND knowledgetest.userid = practicaltest.userid 
+AND knowledgetest.grade >= 75
+AND practicaltest.grade = 1
+AND user.userid = current_user
+AND user.fully_certified != 1
+
+IF counts > 0 THEN 
+        TRY
+            UPDATE USER
+                SET fully_certified = 1
+                    WHERE userid = current_user
+        CATCH
+            ERROR SFMT("UPDATE failed: %1", SQLERRMESSAGE)
+            RETURN 0
+        END TRY
+END IF 
+
+        IF sqlca.sqlerrd[3] == 1 THEN
+            DISPLAY "user: "||current_user|| "is fully certified"
+           RETURN True
+        ELSE
+            RETURN False
+        END IF
+
+END FUNCTION 
 

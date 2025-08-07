@@ -36,18 +36,18 @@ FUNCTION ptest_form_driver()
                 LET current_ptest = practical_test_query.fetch_rel_ptest(3)
             END IF
             CALL setup_dialog(DIALOG, (current_ptest > 0))
-            if practical_test_data.certification_complete_test(current_ptest) THEN 
+          {  if practical_test_data.certification_complete_test(current_ptest) THEN 
                 DISPLAY "yayyy"
-            END if
+            END if}
         ON ACTION update
             LET current_ptest = practical_test_data.update_ptest(current_ptest)
             IF current_ptest > 0 THEN
                 LET current_ptest = practical_test_query.fetch_rel_ptest(3)
             END IF
             CALL setup_dialog(DIALOG, (current_ptest > 0))
-            if practical_test_data.certification_complete_test(current_ptest) THEN 
+           { if practical_test_data.certification_complete_test(current_ptest) THEN 
                     DISPLAY "yayyy"
-                END if
+                END if}
         ON ACTION delete
             LET current_ptest = practical_test_data.delete_ptest(current_ptest)
             CALL setup_dialog(DIALOG, (current_ptest > 0))
@@ -105,9 +105,9 @@ FUNCTION ptest_form_driver_forid(current_ptest)
             END IF
             CALL setup_dialog(DIALOG, (current_ptest > 0))
             CALL setup_dialog(DIALOG, (current_ptest > 0))
-            if practical_test_data.certification_complete_test(current_ptest) THEN 
+          {  if practical_test_data.certification_complete_test(current_ptest) THEN 
                     DISPLAY "yayyy"
-                END if
+                END if}
             
         ON ACTION update
             LET current_ptest = practical_test_data.update_ptest(current_ptest)
@@ -116,9 +116,9 @@ FUNCTION ptest_form_driver_forid(current_ptest)
             END IF
             CALL setup_dialog(DIALOG, (current_ptest > 0))
             CALL setup_dialog(DIALOG, (current_ptest > 0))
-            if practical_test_data.certification_complete_test(current_ptest) THEN 
+            {if practical_test_data.certification_complete_test(current_ptest) THEN 
                     DISPLAY "yayyy"
-                END if
+                END if}
 
 
         ON ACTION delete

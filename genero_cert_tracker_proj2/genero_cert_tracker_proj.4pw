@@ -100,6 +100,7 @@
     </Application>
     <Library binaryName="Databases" id="1986" label="Databases">
       <File filePath="db/cert_trackerdb_2.4db"/>
+      <File filePath="db/insert_example_recs.txt"/>
     </Library>
     <Library binaryName="Library" dependencies="1986" id="14000" label="Library"/>
   </Group>

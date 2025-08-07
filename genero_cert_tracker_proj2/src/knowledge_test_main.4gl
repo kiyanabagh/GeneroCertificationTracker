@@ -35,20 +35,13 @@ FUNCTION ktest_form_driver()
             IF current_ktest > 0 THEN
                 LET current_ktest = knowledge_test_query.fetch_rel_ktest(3)
             END IF
-            CALL setup_dialog(DIALOG, (current_ktest > 0))
-            if knowledge_test_data.certification_complete_test2(current_ktest) THEN 
-                    DISPLAY "yayyy"
-            END if
+
         ON ACTION update
             LET current_ktest = knowledge_test_data.update_ktest(current_ktest)
             IF current_ktest > 0 THEN
                 LET current_ktest = knowledge_test_query.fetch_rel_ktest(3)
             END IF
-            
-            CALL setup_dialog(DIALOG, (current_ktest > 0))
-            if knowledge_test_data.certification_complete_test2(current_ktest) THEN 
-                    DISPLAY "yayyy"
-            END if
+ 
         ON ACTION delete
             LET current_ktest = knowledge_test_data.delete_ktest(current_ktest)
             CALL setup_dialog(DIALOG, (current_ktest > 0))
@@ -105,9 +98,7 @@ FUNCTION ktest_form_driver_forid(current_ktest)
                 LET current_ktest = knowledge_test_query.fetch_rel_ktest(3)
             END IF
             CALL setup_dialog(DIALOG, (current_ktest > 0))
-            IF knowledge_test_data.certification_complete_test2(current_ktest) THEN
-            DISPLAY "yayyy"
-            END IF 
+
         ON ACTION update
             LET current_ktest = knowledge_test_data.update_ktest(current_ktest)
             IF current_ktest > 0 THEN
@@ -115,9 +106,6 @@ FUNCTION ktest_form_driver_forid(current_ktest)
             END IF
     
             CALL setup_dialog(DIALOG, (current_ktest > 0))
-            if knowledge_test_data.certification_complete_test2(current_ktest) THEN 
-                    DISPLAY "yayyy"
-            END if
 
         ON ACTION delete
             LET current_ktest = knowledge_test_data.delete_ktest(current_ktest)
