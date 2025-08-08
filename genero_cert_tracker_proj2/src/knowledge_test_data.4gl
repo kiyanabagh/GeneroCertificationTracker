@@ -145,29 +145,4 @@ PUBLIC FUNCTION delete_ktest(current_ktest t_ktest_id) RETURNS t_ktest_id
     RETURN 0
 
 END FUNCTION
-{
 
-PUBLIC FUNCTION certification_complete_test2(current_test_id) RETURNS boolean
-
-    DEFINE current_test_id LIKE practicaltest.testid
-    DEFINE passed_id LIKE user.userid
-
-SELECT practicaltest.userid
-INTO passed_id 
-FROM practicaltest, knowledgetest 
-WHERE practicaltest.testid == current_test_id 
-AND practicaltest.userid == knowledgetest.userid
-AND practicaltest.grade == 1 
-AND knowledgetest.grade >= 75
-
-IF passed_id IS NOT NULL THEN
-DISPLAY passed_id
-UPDATE user 
-    SET fully_certified = 1
-    WHERE userid = passed_id
-MESSAGE "This user is fully certified!"
-RETURN true
-END IF 
-
-RETURN false
-END FUNCTION}
